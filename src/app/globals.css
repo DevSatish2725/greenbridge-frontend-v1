@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+:root {
+  --primary: #159447;
+  --primary-hover: #107a3a;
+  --primary-light: #edf8ef;
+
+  --accent: #efa536;
+  --accent-hover: #dc9024;
+  --accent-light: #fff3dc;
+
+  --background: #fff8e9;
+  --surface: #ffffff;
+  --surface-muted: #f4f9f1;
+
+  --text-primary: #17201a;
+  --text-secondary: #536157;
+  --text-muted: #7a857d;
+
+  --border: #e7d8b9;
+
+  --success: #16803a;
+  --warning: #d97706;
+  --error: #dc2626;
+  --info: #2563eb;
+}
+
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-hover: var(--primary-hover);
+  --color-primary-light: var(--primary-light);
+
+  --color-accent: var(--accent);
+  --color-accent-hover: var(--accent-hover);
+  --color-accent-light: var(--accent-light);
+
+  --color-background: var(--background);
+  --color-surface: var(--surface);
+  --color-surface-muted: var(--surface-muted);
+
+  --color-text-primary: var(--text-primary);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-border: var(--border);
+
+  --color-success: var(--success);
+  --color-warning: var(--warning);
+  --color-error: var(--error);
+  --color-info: var(--info);
+
+  --font-sans: var(--font-noto-sans);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  min-height: 100%;
+}
+
+body {
+  min-height: 100vh;
+  margin: 0;
+  background: var(--background);
+  color: var(--text-primary);
+  font-family: var(--font-noto-sans), Arial, Helvetica, sans-serif;
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button,
+a {
+  -webkit-tap-highlight-color: transparent;
+}
