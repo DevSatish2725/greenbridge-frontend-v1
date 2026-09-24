@@ -1,5 +1,5 @@
 export interface SellerShopItem {
- itemId: string;
+  itemId: string;
   vegetableId: string;
   vegetableName: string;
   unit: string;
@@ -8,11 +8,28 @@ export interface SellerShopItem {
   isNegotiable: boolean;
   displayOrder: number;
   imageOverride?: string | null;
+
+  _id: string;
+
+  name: string;
+
+  displayNames: {
+    en?: string;
+    hi?: string;
+  };
+
+  searchAliases?: string[];
+
+  imageUrl?: string;
+
+  defaultUnit: string;
+  allowedUnits: string[];
+
+  isActive: boolean;
 }
 
-
 export interface SellerShopData {
-   seller: {
+  seller: {
     id: string;
     name: string;
     location: {
@@ -20,12 +37,13 @@ export interface SellerShopData {
       district: string;
       village: string;
       pincode: string;
-    },
+    };
     reputation: {
       averageRating: number;
       completedDeals: number;
     };
     isSaved: boolean;
+    shopOwner: boolean;
   };
 
   inventory: {

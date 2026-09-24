@@ -2,7 +2,7 @@
 
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Menu,
   X,
@@ -13,17 +13,24 @@ import {
   UserRound,
   ChevronDown,
   LogOut,
+  Heart,
 } from "lucide-react";
 
 import { useAuth } from "@/providers/AuthProvider";
-import { authService } from "@/services/auth.service";
 import { NavLink } from "./NavLink";
+
+import { useTranslations } from "next-intl";
+import LanguageSwitcher from "../common/LanguageSwitcher";
 
 export default function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isProfileOpen, setIsProfileOpen] = useState(false);
 
+  const profileMenuRef = useRef<HTMLDivElement>(null);
+
   const pathname = usePathname();
+
+  const t = useTranslations("Navbar");
 
   const { user, isLoading, logout } = useAuth();
 
@@ -41,6 +48,23 @@ export default function Navbar() {
         .slice(0, 2)
         .toUpperCase()
     : "U";
+
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (
+        profileMenuRef.current &&
+        !profileMenuRef.current.contains(event.target as Node)
+      ) {
+        setIsProfileOpen(false);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClickOutside);
+
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   if (isLoading) {
     return (
@@ -95,13 +119,13 @@ export default function Navbar() {
   const handleLogout = async () => {
     await logout();
     setIsMenuOpen(false);
+    setIsProfileOpen(false);
   };
 
   console.log("navbar user", user);
   const becomeSellerHref = isAuthenticated
     ? "/become-seller"
     : `/login?returnTo=${encodeURIComponent("/become-seller")}`;
-  
 
   const isRegisterActive =
     pathname === "/register" || pathname.startsWith("/register/");
@@ -193,7 +217,7 @@ export default function Navbar() {
             "
           >
             <NavLink href="/sellers" icon={<Store className="h-5 w-5" />}>
-              Find Sellers
+              {t("findSellers")}
             </NavLink>
 
             {isSeller ? (
@@ -202,7 +226,7 @@ export default function Navbar() {
                 activePath="/seller"
                 icon={<LayoutDashboard className="h-5 w-5" />}
               >
-                Seller Dashboard
+                {t("sellerDashboard")}
               </NavLink>
             ) : (
               <NavLink
@@ -210,9 +234,11 @@ export default function Navbar() {
                 activePath="/become-seller"
                 icon={<UserPlus className="h-5 w-5" />}
               >
-                Become Seller
+                {t("becomeSeller")}
               </NavLink>
             )}
+
+            <LanguageSwitcher />
 
             <div
               className="
@@ -226,7 +252,7 @@ export default function Navbar() {
             {!isAuthenticated ? (
               <>
                 <NavLink href="/login" icon={<></>}>
-                  Login
+                  {t("login")}
                 </NavLink>
 
                 <Link
@@ -252,11 +278,11 @@ export default function Navbar() {
   `}
                 >
                   <UserPlus className="h-4 w-4" />
-                  Register
+                  {t("register")}
                 </Link>
               </>
             ) : (
-              <div className="relative">
+              <div className="relative" ref={profileMenuRef}>
                 <button
                   type="button"
                   onClick={() => setIsProfileOpen((previous) => !previous)}
@@ -345,7 +371,7 @@ export default function Navbar() {
         "
                     >
                       <UserRound className="h-4 w-4" />
-                      My Profile
+                      {t("myProfile")}
                     </Link>
 
                     {isSeller && (
@@ -366,9 +392,27 @@ export default function Navbar() {
           "
                       >
                         <LayoutDashboard className="h-4 w-4" />
-                        Seller Dashboard
+                        {t("sellerDashboard")}
                       </Link>
                     )}
+
+                    <Link
+                      href="/saved-sellers"
+                      onClick={() => setIsProfileOpen(false)}
+                      className=" flex
+          min-h-11
+          items-center
+          gap-3
+          rounded-lg
+          px-3
+          text-sm
+          font-semibold
+          text-text-primary
+          hover:bg-surface-muted"
+                    >
+                      <Heart size={17} className="h-4 w-4" />
+                      {t("savedSellers")}
+                    </Link>
 
                     <div
                       className="
@@ -397,7 +441,7 @@ export default function Navbar() {
         "
                     >
                       <LogOut className="h-4 w-4" />
-                      Logout
+                      {t("logout")}
                     </button>
                   </div>
                 )}
@@ -611,7 +655,7 @@ export default function Navbar() {
                 icon={<Store className="h-5 w-5" />}
                 onClick={() => setIsMenuOpen(false)}
               >
-                Find Sellers
+                {t("findSellers")}
               </MobileNavLink>
 
               {isSeller ? (
@@ -620,7 +664,7 @@ export default function Navbar() {
                   icon={<LayoutDashboard className="h-5 w-5" />}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Seller Dashboard
+                  {t("sellerDashboard")}
                 </MobileNavLink>
               ) : (
                 <MobileNavLink
@@ -628,7 +672,7 @@ export default function Navbar() {
                   icon={<UserPlus className="h-5 w-5" />}
                   onClick={() => setIsMenuOpen(false)}
                 >
-                  Become Seller
+                  {t("becomeSeller")}
                 </MobileNavLink>
               )}
 
@@ -647,7 +691,7 @@ export default function Navbar() {
                     icon={<LogIn className="h-5 w-5" />}
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    Login
+                    {t("login")}
                   </MobileNavLink>
 
                   <Link
@@ -668,7 +712,7 @@ export default function Navbar() {
                     "
                   >
                     <UserPlus className="h-5 w-5" />
-                    Register
+                    {t("register")}
                   </Link>
                 </>
               ) : (
@@ -678,7 +722,14 @@ export default function Navbar() {
                     icon={<UserRound className="h-5 w-5" />}
                     onClick={() => setIsMenuOpen(false)}
                   >
-                    My Profile
+                    {t("myProfile")}
+                  </MobileNavLink>
+                  <MobileNavLink
+                    href="/saved-sellers"
+                    icon={<Heart className="h-5 w-5" />}
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    {t("savedSellers")}
                   </MobileNavLink>
                   <button
                     type="button"
@@ -698,7 +749,7 @@ export default function Navbar() {
   "
                   >
                     <LogOut className="h-5 w-5" />
-                    Logout
+                    {t("logout")}
                   </button>
                 </>
               )}

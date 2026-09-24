@@ -1,17 +1,22 @@
-import axios, {
-  AxiosError,
-  InternalAxiosRequestConfig,
-} from "axios";
+import axios, { AxiosError, InternalAxiosRequestConfig } from "axios";
 
-import {
-  getAccessToken,
-  setAccessToken,
-} from "@/lib/auth.token";
+import { getAccessToken, setAccessToken } from "@/lib/auth.token";
 
 import refreshClient from "@/lib/refresh-client";
+interface ApiErrorResponse {
+  success: false;
+  message: string;
+}
 
-interface RetryAxiosRequestConfig
-  extends InternalAxiosRequestConfig {
+export type API_ERROR = AxiosError<ApiErrorResponse>;
+
+export interface ApiResponse<T> {
+  success: boolean;
+  message: string;
+  data: T;
+}
+
+interface RetryAxiosRequestConfig extends InternalAxiosRequestConfig {
   _retry?: boolean;
 }
 
@@ -35,10 +40,11 @@ const axiosInstance = axios.create({
 
 axiosInstance.interceptors.request.use((config) => {
   const accessToken = getAccessToken();
+  console.log("accessToken", accessToken);
+  console.log("url", config.url);
 
   if (accessToken) {
-    config.headers.Authorization =
-      `Bearer ${accessToken}`;
+    config.headers.Authorization = `Bearer ${accessToken}`;
   }
 
   return config;
@@ -47,12 +53,9 @@ axiosInstance.interceptors.request.use((config) => {
 async function refreshAccessToken() {
   if (!refreshPromise) {
     refreshPromise = refreshClient
-      .post<RefreshResponse>(
-        "/auth/refresh-token",
-      )
+      .post<RefreshResponse>("/auth/refresh-token")
       .then((response) => {
-        const token =
-          response.data.data.accessToken;
+        const token = response.data.data.accessToken;
 
         setAccessToken(token);
 
@@ -70,8 +73,7 @@ axiosInstance.interceptors.response.use(
   (response) => response,
 
   async (error: AxiosError) => {
-    const originalRequest =
-      error.config as RetryAxiosRequestConfig;
+    const originalRequest = error.config as RetryAxiosRequestConfig;
 
     if (
       error.response?.status !== 401 ||
@@ -84,11 +86,9 @@ axiosInstance.interceptors.response.use(
     originalRequest._retry = true;
 
     try {
-      const newAccessToken =
-        await refreshAccessToken();
+      const newAccessToken = await refreshAccessToken();
 
-      originalRequest.headers.Authorization =
-        `Bearer ${newAccessToken}`;
+      originalRequest.headers.Authorization = `Bearer ${newAccessToken}`;
 
       return axiosInstance(originalRequest);
     } catch (refreshError) {

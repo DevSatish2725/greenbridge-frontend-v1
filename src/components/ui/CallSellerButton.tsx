@@ -1,8 +1,7 @@
 "use client";
 
-import { useRouter } from "next/navigation";
-
 import { useAuth } from "@/providers/AuthProvider";
+import { useTranslations } from "next-intl";
 
 interface CallSellerButtonProps {
   sellerId: string;
@@ -17,9 +16,9 @@ export default function CallSellerButton({
   guestCallModalOpen,
   isLoading: callSellerLoading,
 }: CallSellerButtonProps) {
-  const router = useRouter();
-
   const { isAuthenticated, isLoading } = useAuth();
+
+  const t = useTranslations("FindSellers");
 
   const handleCall = () => {
     if (isLoading) {
@@ -27,7 +26,7 @@ export default function CallSellerButton({
     }
 
     if (!isAuthenticated) {
-      guestCallModalOpen()
+      guestCallModalOpen();
       return;
     }
 
@@ -49,7 +48,9 @@ export default function CallSellerButton({
         disabled:opacity-60
       "
     >
-      {callSellerLoading ? "Getting call details" : "📞 कॉल करें "}
+      {callSellerLoading
+        ? t("sellers.gettingCallDetails")
+        : `📞 ${t("sellers.call")}`}
     </button>
   );
 }

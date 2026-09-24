@@ -10,6 +10,8 @@ import {
   Star,
 } from "lucide-react";
 import CallSellerButton from "@/components/ui/CallSellerButton";
+import { SellerRatingSummary } from "@/types/seller-rating";
+import { useTranslations } from "next-intl";
 
 interface SellerShopHeaderProps {
   seller: {
@@ -22,10 +24,9 @@ interface SellerShopHeaderProps {
       state?: string;
       pincode?: string;
     };
-
-    reputation: {
-      averageRating: number;
-    };
+    isSaved: boolean;
+    shopOwner: boolean;
+    sellerRatingSummary: SellerRatingSummary;
   };
 
   sellerId: string;
@@ -46,6 +47,7 @@ export default function SellerShopHeader({
   onSave,
   onWhatsApp,
 }: SellerShopHeaderProps) {
+  const t = useTranslations("SellerShop");
   const locationText = [
     seller?.location?.village,
     seller?.location?.district,
@@ -190,14 +192,11 @@ export default function SellerShopHeader({
                   "
               >
                 <CheckCircle2 className="h-3.5 w-3.5" />
-                Verified
+                {t("verified")}
               </span>
               <div
                 className="
                   mt-2
-                  flex flex-wrap
-                  items-center
-                  gap-x-3
                   gap-y-1
                 "
               >
@@ -217,18 +216,29 @@ export default function SellerShopHeader({
                     gap-1
                   "
                 >
-                  <Star
-                    className="
+                  {seller.sellerRatingSummary.ratingCount > 0 ? (
+                    <div className="flex items-center gap-2">
+                      <Star
+                        className="
                       h-5 w-5
                       fill-warning
                       text-warning
                     "
-                  />
+                      />
 
-                  <span className="font-bold">
-                    {seller?.reputation?.averageRating.toFixed(1)}
-                  </span>
-                  {/* TODO: Implement total review count */}
+                      <span className="font-bold">
+                        {seller.sellerRatingSummary.averageRating.toFixed(1)}
+                      </span>
+                      <span className="h-1 w-1 bg-warning block rounded-full"></span>
+                      <span className="font-bold">
+                        {seller.sellerRatingSummary.ratingCount > 1
+                          ? `${seller.sellerRatingSummary.ratingCount} ratings`
+                          : "1 rating"}
+                      </span>
+                    </div>
+                  ) : (
+                      <span>{t("noRatingsYet")}</span>
+                  )}
                 </div>
               </div>
 
@@ -251,17 +261,18 @@ export default function SellerShopHeader({
         </div>
 
         {/* Actions */}
-        <div
-          className="
+        {!seller.shopOwner && (
+          <div
+            className="
             mt-5
             grid grid-cols-[auto_1fr_1fr]
             gap-2
           "
-        >
-          <button
-            type="button"
-            onClick={onSave}
-            className="
+          >
+            <button
+              type="button"
+              onClick={onSave}
+              className="
               flex min-h-12
               items-center
               justify-center
@@ -273,21 +284,26 @@ export default function SellerShopHeader({
               transition
               hover:bg-surface-muted
             "
-          >
-            <Bookmark className="h-5 w-5" />
-            <span className="hidden sm:inline">Save</span>
-          </button>
+            >
+              <Bookmark
+                size={20}
+                className={`${seller.isSaved ? "fill-primary text-primary" : "text-text-secondary"} h-5 w-5`}
+              />
+              <span className="hidden sm:inline">Save</span>
+            </button>
 
-          <CallSellerButton
-            sellerId={sellerId}
-            isLoading={isLoading}
-            getCallSellerId={getCallSellerId}
-            guestCallModalOpen={() => guestCallModalOpen(sellerId, seller.name)}
-          />
-          <button
-            type="button"
-            onClick={onWhatsApp}
-            className="
+            <CallSellerButton
+              sellerId={sellerId}
+              isLoading={isLoading}
+              getCallSellerId={getCallSellerId}
+              guestCallModalOpen={() =>
+                guestCallModalOpen(sellerId, seller.name)
+              }
+            />
+            <button
+              type="button"
+              onClick={onWhatsApp}
+              className="
               flex min-h-12
               items-center
               justify-center
@@ -301,65 +317,13 @@ export default function SellerShopHeader({
               transition
               hover:bg-primary/10
             "
-          >
-            <MessageCircle className="h-5 w-5" />
-            WhatsApp
-          </button>
-        </div>
+            >
+              <MessageCircle className="h-5 w-5" />
+              WhatsApp
+            </button>
+          </div>
+        )}
       </div>
     </section>
-  );
-}
-
-function Stat({
-  icon,
-  value,
-  label,
-}: {
-  icon: React.ReactNode;
-  value: string;
-  label: string;
-}) {
-  return (
-    <div
-      className="
-        flex items-center
-        gap-2.5
-        rounded-xl
-        bg-primary-light
-        px-3 py-3
-      "
-    >
-      <div
-        className="
-          shrink-0
-          [&>svg]:h-5
-          [&>svg]:w-5
-          [&>svg]:text-primary
-        "
-      >
-        {icon}
-      </div>
-
-      <div>
-        <p
-          className="
-            text-xs font-bold
-            text-text-primary
-          "
-        >
-          {value}
-        </p>
-
-        <p
-          className="
-            text-[11px]
-            text-text-secondary
-          "
-        >
-          {label}
-        </p>
-      </div>
-    </div>
   );
 }

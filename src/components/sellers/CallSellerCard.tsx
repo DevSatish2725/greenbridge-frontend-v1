@@ -1,6 +1,7 @@
 "use client";
 
 import { Phone, X, MapPin } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface CallSellerCardProps {
   sellerName: string;
@@ -21,6 +22,9 @@ export default function CallSellerCard({
   location,
   onClose,
 }: CallSellerCardProps) {
+  const t = useTranslations("CallSeller");
+  const tc = useTranslations("Common");
+
   const locationText = [location?.village, location?.district, location?.state]
     .filter(Boolean)
     .join(", ");
@@ -89,7 +93,7 @@ export default function CallSellerCard({
                 text-text-primary
               "
               >
-                Call Seller
+                ={t("callSeller")}
               </h2>
 
               <p
@@ -98,7 +102,7 @@ export default function CallSellerCard({
                 text-text-secondary
               "
               >
-                Contact seller directly
+                {t("contactSellerDirectly")}
               </p>
             </div>
           </div>
@@ -170,7 +174,7 @@ export default function CallSellerCard({
             text-text-muted
           "
           >
-            Contact number
+            {t("contactNumber")}
           </p>
 
           <p
@@ -203,8 +207,7 @@ export default function CallSellerCard({
             text-text-secondary
           "
           >
-            Discuss price, quantity and pickup or delivery directly with the
-            seller.
+            {t("contactNote")}
           </p>
         </div>
 
@@ -233,7 +236,7 @@ export default function CallSellerCard({
             hover:bg-surface-muted
           "
           >
-            Cancel
+            {tc("cancel")}
           </button>
 
           <button
@@ -256,7 +259,7 @@ export default function CallSellerCard({
           "
           >
             <Phone className="h-5 w-5" />
-            Call Now
+            {t("callNow")}
           </button>
         </div>
       </div>

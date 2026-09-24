@@ -1,7 +1,13 @@
 "use client";
 
 import { useState } from "react";
-import { MapPin, LocateFixed, Search, CheckCircle2 } from "lucide-react";
+import {
+  CheckCircle2,
+  LocateFixed,
+  MapPin,
+  Search,
+} from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export interface CurrentLocation {
   latitude: number;
@@ -12,22 +18,21 @@ interface LocationSelectorProps {
   location?: string;
   isManualSelected: boolean;
   onLocationChange: (location: CurrentLocation) => void;
-
   onChooseLocation: () => void;
   handleManualLocationClose: () => void;
 }
 
 export default function LocationSelector({
-  location,
   isManualSelected,
   onLocationChange,
   onChooseLocation,
   handleManualLocationClose,
 }: LocationSelectorProps) {
   const [isLocating, setIsLocating] = useState(false);
-  const [isCurrentLocaton, setIsCurrentLocation] = useState(false);
-
+  const [isCurrentLocation, setIsCurrentLocation] = useState(false);
   const [error, setError] = useState<string | null>(null);
+
+  const t = useTranslations("FindSellers");
 
   const handleUseCurrentLocation = () => {
     if (!navigator.geolocation) {
@@ -85,93 +90,116 @@ export default function LocationSelector({
 
   return (
     <section>
-      <>
-        <div className="mb-4 flex items-center gap-3">
-          <div
-            className="
-                flex h-11 w-11 shrink-0
-                items-center justify-center
-                rounded-full bg-accent-light
-              "
-            aria-hidden="true"
-          >
-            📍
-          </div>
-
-          <div>
-            <h2 className="font-bold text-text-primary">
-              Find sellers near you
-            </h2>
-
-            <p className="text-sm text-text-secondary">
-              Choose how you want to search
-            </p>
-          </div>
+      {/* Heading */}
+      <div className="mb-3 flex items-center gap-2.5">
+        <div
+          className="
+            flex h-9 w-9 shrink-0
+            items-center justify-center
+            rounded-lg bg-accent-light
+            text-accent
+          "
+        >
+          <MapPin size={18} />
         </div>
 
-        <div className="flex flex-col gap-2 sm:flex-row">
-          <button
-            type="button"
-            onClick={() => {
-              handleUseCurrentLocation();
-              handleManualLocationClose();
-            }}
-            disabled={isLocating}
-            className="
-                 flex-1 rounded-lg
-                flex
-                gap-4
-                items-center
-                bg-primary
-                p-2
-                font-semibold text-white
-                transition-colors
-                hover:bg-primary-hover
-                disabled:cursor-not-allowed
-                disabled:opacity-60
-              "
-          >
-            <LocateFixed />
-            <p className="flex flex-col items-start">
-              <span>
-                {isLocating ? "Getting location..." : "Use Current Location"}
-              </span>
-              <span className="text-xs">Find sellers near you</span>
-            </p>
-            {isCurrentLocaton ? <CheckCircle2 className="ml-auto" /> : null}
-          </button>
+        <div className="min-w-0">
+          <h2 className="text-sm font-bold text-text-primary">
+            {t("subtitle")}
+          </h2>
 
-          <button
-            type="button"
-            onClick={() => {
-              onChooseLocation();
-              setIsCurrentLocation(false);
-            }}
-            className="
-                flex-1 rounded-lg
-                flex
-                items-center
-                p-2
-                gap-4
-                border border-accent
-                bg-surface
-                font-semibold text-warning
-                transition-colors
-                hover:bg-accent-light
-              "
-          >
-            <Search />
-            <p className="flex flex-col items-start">
-              <span>Search Manually</span>
-              <span className="text-xs text-left">Choose state, district or village</span>
-            </p>
-            {isManualSelected ? <CheckCircle2 className="ml-auto" /> : null}
-          </button>
+          <p className="text-xs text-text-secondary">
+            {t("location.description")}
+          </p>
         </div>
-      </>
+      </div>
 
+      {/* Location options */}
+      <div className="grid grid-cols-1 gap-2">
+        {/* Current location */}
+        <button
+          type="button"
+          disabled={isLocating}
+          onClick={() => {
+            handleUseCurrentLocation();
+            handleManualLocationClose();
+          }}
+          className="
+            flex min-h-14 items-center gap-3
+            rounded-xl
+            bg-primary
+            px-4 py-2.5
+            text-left text-white
+            transition-colors
+            hover:bg-primary-hover
+            disabled:cursor-not-allowed
+            disabled:opacity-60
+          "
+        >
+          <LocateFixed size={21} className="shrink-0" />
+
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold leading-5">
+              {isLocating
+                ? t("location.currentLocation.gettingLocation")
+                : t("location.currentLocation.title")}
+            </p>
+
+            <p className="text-xs leading-4 text-white/80">
+              {t("location.currentLocation.description")}
+            </p>
+          </div>
+
+          {isCurrentLocation && (
+            <CheckCircle2 size={19} className="shrink-0" />
+          )}
+        </button>
+
+        {/* Manual location */}
+        <button
+          type="button"
+          onClick={() => {
+            onChooseLocation();
+            setIsCurrentLocation(false);
+          }}
+          className="
+            flex min-h-14 items-center gap-3
+            rounded-xl
+            border border-accent
+            bg-surface
+            px-4 py-2.5
+            text-left
+            transition-colors
+            hover:bg-accent-light
+          "
+        >
+          <Search size={21} className="shrink-0 text-accent" />
+
+          <div className="min-w-0 flex-1">
+            <p className="text-sm font-semibold leading-5 text-accent">
+              {t("location.manual.title")}
+            </p>
+
+            <p className="text-xs leading-4 text-text-secondary">
+              {t("location.manual.description")}
+            </p>
+          </div>
+
+          {isManualSelected && (
+            <CheckCircle2
+              size={19}
+              className="shrink-0 text-accent"
+            />
+          )}
+        </button>
+      </div>
+
+      {/* Geolocation error */}
       {error && (
-        <p role="alert" className="mt-3 text-sm text-error">
+        <p
+          role="alert"
+          className="mt-2 text-xs text-error"
+        >
           {error}
         </p>
       )}

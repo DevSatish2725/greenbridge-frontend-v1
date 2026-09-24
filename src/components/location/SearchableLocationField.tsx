@@ -1,14 +1,10 @@
 "use client";
 
 import { Search } from "lucide-react";
-import {
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import { useEffect, useRef, useState } from "react";
 
 interface Option {
-  _id: string;
+  id: string;
   name: string;
 }
 
@@ -20,13 +16,9 @@ interface SearchableLocationFieldProps {
 
   options: Option[];
 
-  onSearchChange?: (
-    value: string,
-  ) => void;
+  onSearchChange?: (value: string) => void;
 
-  onSelect: (
-    option: Option,
-  ) => void;
+  onSelect: (option: Option) => void;
 
   disabled?: boolean;
   isLoading?: boolean;
@@ -48,24 +40,21 @@ export default function SearchableLocationField({
   localSearch = false,
   minimumSearchLength = 0,
 }: SearchableLocationFieldProps) {
-  const [search, setSearch] =
-    useState(value?.name ?? "");
+  const [search, setSearch] = useState(value?.name ?? "");
 
-  const [isOpen, setIsOpen] =
-    useState(false);
+  console.log("search value", value);
 
-  const containerRef =
-    useRef<HTMLDivElement>(null);
+  console.log("search options", options);
+
+  const [isOpen, setIsOpen] = useState(false);
+
+  const containerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const handleOutsideClick = (
-      event: MouseEvent,
-    ) => {
+    const handleOutsideClick = (event: MouseEvent) => {
       if (
         containerRef.current &&
-        !containerRef.current.contains(
-          event.target as Node,
-        )
+        !containerRef.current.contains(event.target as Node)
       ) {
         setIsOpen(false);
 
@@ -75,48 +64,29 @@ export default function SearchableLocationField({
       }
     };
 
-    document.addEventListener(
-      "mousedown",
-      handleOutsideClick,
-    );
+    document.addEventListener("mousedown", handleOutsideClick);
 
     return () => {
-      document.removeEventListener(
-        "mousedown",
-        handleOutsideClick,
-      );
+      document.removeEventListener("mousedown", handleOutsideClick);
     };
   }, [value]);
 
-  const displayedOptions =
-    localSearch
-      ? options.filter((option) =>
-          option.name
-            .toLowerCase()
-            .includes(
-              search
-                .trim()
-                .toLowerCase(),
-            ),
-        )
-      : options;
+  const displayedOptions = localSearch
+    ? options.filter((option) =>
+        option.name.toLowerCase().includes(search.trim().toLowerCase()),
+      )
+    : options;
 
-  const handleInputChange = (
-    inputValue: string,
-  ) => {
+  const handleInputChange = (inputValue: string) => {
     setSearch(inputValue);
     setIsOpen(true);
 
     if (!localSearch) {
-      onSearchChange?.(
-        inputValue,
-      );
+      onSearchChange?.(inputValue);
     }
   };
 
-  const handleSelect = (
-    option: Option,
-  ) => {
+  const handleSelect = (option: Option) => {
     setSearch(option.name);
 
     setIsOpen(false);
@@ -125,15 +95,10 @@ export default function SearchableLocationField({
   };
 
   const shouldShowTypeMessage =
-    !localSearch &&
-    search.trim().length <
-      minimumSearchLength;
+    !localSearch && search.trim().length < minimumSearchLength;
 
   return (
-    <div
-      ref={containerRef}
-      className="relative"
-    >
+    <div ref={containerRef} className="relative">
       <label
         className="
           mb-2
@@ -172,11 +137,7 @@ export default function SearchableLocationField({
               setIsOpen(true);
             }
           }}
-          onChange={(event) =>
-            handleInputChange(
-              event.target.value,
-            )
-          }
+          onChange={(event) => handleInputChange(event.target.value)}
           className="
             h-12
             w-full
@@ -219,10 +180,9 @@ export default function SearchableLocationField({
         </span>
       </div>
 
-      {isOpen &&
-        !disabled && (
-          <div
-            className="
+      {isOpen && !disabled && (
+        <div
+          className="
               absolute
               left-0
               right-0
@@ -238,54 +198,44 @@ export default function SearchableLocationField({
               py-1
               shadow-lg
             "
-          >
-            {shouldShowTypeMessage ? (
-              <p
-                className="
+        >
+          {shouldShowTypeMessage ? (
+            <p
+              className="
                   px-4 py-3
                   text-sm
                   text-text-muted
                 "
-              >
-                Type at least{" "}
-                {
-                  minimumSearchLength
-                }{" "}
-                characters
-              </p>
-            ) : isLoading ? (
-              <p
-                className="
+            >
+              Type at least {minimumSearchLength} characters
+            </p>
+          ) : isLoading ? (
+            <p
+              className="
                   px-4 py-3
                   text-sm
                   text-text-secondary
                 "
-              >
-                Searching...
-              </p>
-            ) : displayedOptions
-                .length === 0 ? (
-              <p
-                className="
+            >
+              Searching...
+            </p>
+          ) : displayedOptions.length === 0 ? (
+            <p
+              className="
                   px-4 py-3
                   text-sm
                   text-text-muted
                 "
-              >
-                No location found
-              </p>
-            ) : (
-              displayedOptions.map(
-                (option) => (
-                  <button
-                    key={option._id}
-                    type="button"
-                    onClick={() =>
-                      handleSelect(
-                        option,
-                      )
-                    }
-                    className="
+            >
+              No location found
+            </p>
+          ) : (
+            displayedOptions.map((option) => (
+              <button
+                key={option.id}
+                type="button"
+                onClick={() => handleSelect(option)}
+                className="
                       flex
                       min-h-11
                       w-full
@@ -299,14 +249,13 @@ export default function SearchableLocationField({
 
                       hover:bg-primary-light
                     "
-                  >
-                    {option.name}
-                  </button>
-                ),
-              )
-            )}
-          </div>
-        )}
+              >
+                {option.name}
+              </button>
+            ))
+          )}
+        </div>
+      )}
     </div>
   );
 }

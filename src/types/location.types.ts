@@ -10,17 +10,17 @@ export interface ManualLocation {
 }
 
 export interface StateOption {
-  _id: string;
+  id: string;
   name: string;
 }
 
 export interface DistrictOption {
-  _id: string;
+  id: string;
   name: string;
 }
 
 export interface VillageOption {
-  _id: string;
+  id: string;
   name: string;
 }
 

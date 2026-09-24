@@ -1,8 +1,10 @@
 import Link from "next/link";
 
 import RegisterMobileForm from "@/components/auth/RegisterMobileForm";
+import { useTranslations } from "next-intl";
 
 export default function RegisterPage() {
+  const t = useTranslations("Register");
   return (
     <main className="min-h-screen bg-background px-4 py-10">
       <div className="mx-auto w-full max-w-md">
@@ -23,12 +25,8 @@ export default function RegisterPage() {
           </p>
 
           <h1 className="mt-7 text-2xl font-bold text-text-primary">
-            अपना खाता बनाएं
+            {t("title")}
           </h1>
-
-          <p className="mt-2 text-sm text-text-secondary">
-            Create your GreenBridge account
-          </p>
         </div>
 
         <div className="mt-7">
@@ -36,12 +34,12 @@ export default function RegisterPage() {
         </div>
 
         <p className="mt-6 text-center text-sm text-text-secondary">
-          पहले से खाता है?{" "}
+          {t("alreadyHaveAccount")}
           <Link
             href="/login"
             className="font-semibold text-primary hover:underline"
           >
-            लॉगिन करें · Login
+            {t("login")}
           </Link>
         </p>
       </div>

@@ -1,11 +1,7 @@
 "use client";
 
-import {
-  LogIn,
-  Phone,
-  ShieldCheck,
-  X,
-} from "lucide-react";
+import { LogIn, Phone, ShieldCheck, X } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 interface GuestCallModalProps {
   sellerName: string;
@@ -18,6 +14,7 @@ export default function GuestCallModal({
   onClose,
   onLogin,
 }: GuestCallModalProps) {
+  const t = useTranslations("GuestCall");
   return (
     <div
       className="
@@ -33,9 +30,7 @@ export default function GuestCallModal({
         role="dialog"
         aria-modal="true"
         aria-labelledby="guest-call-title"
-        onClick={(event) =>
-          event.stopPropagation()
-        }
+        onClick={(event) => event.stopPropagation()}
         className="
           relative
           w-full max-w-sm
@@ -91,7 +86,7 @@ export default function GuestCallModal({
               text-text-primary
             "
           >
-            Login to Call Seller
+            {t("loginToCallSeller")}
           </h2>
 
           <p
@@ -101,8 +96,7 @@ export default function GuestCallModal({
               text-text-secondary
             "
           >
-            Sign in with your mobile number
-            to contact{" "}
+            {t("signInToContact")}
             <span
               className="
                 font-semibold
@@ -140,7 +134,7 @@ export default function GuestCallModal({
                 text-text-primary
               "
             >
-              Seller contact is protected
+              {t("sellerContactProtected")}
             </p>
 
             <p
@@ -150,8 +144,7 @@ export default function GuestCallModal({
                 text-text-secondary
               "
             >
-              Contact details are available
-              only after login.
+              {t("contactAvailableAfterLogin")}
             </p>
           </div>
         </div>
@@ -176,8 +169,7 @@ export default function GuestCallModal({
           "
         >
           <LogIn className="h-5 w-5" />
-
-          Login to Call
+          {t("loginToCall")}
         </button>
 
         {/* Secondary action */}
@@ -196,7 +188,7 @@ export default function GuestCallModal({
             hover:text-text-primary
           "
         >
-          Not Now
+          {t("notNow")}
         </button>
       </div>
     </div>

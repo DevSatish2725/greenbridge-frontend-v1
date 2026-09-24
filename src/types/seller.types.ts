@@ -4,7 +4,7 @@ export interface Vegetable {
   sellerPrice: number;
   unit: string;
   availableQty: number;
-  image?: string;
+  imageUrl?: string;
 }
 
 export interface SellerCardProps {
@@ -24,11 +24,14 @@ export interface SellerCardProps {
     totalDeals?: number;
   };
 
+  averageRating: number;
+  ratingCount: number;
   vegetables: Vegetable[];
 }
 
 export interface SellerResponse {
   data: SellerCardProps[];
+  nextCursor: string;
 }
 
 export type getCallSellerId = (sellerId: string) => void;
@@ -36,11 +39,33 @@ export type getCallSellerId = (sellerId: string) => void;
 export interface SellerSearchParams {
   latitude?: number;
   longitude?: number;
-  radiusInKm?: number;
 
-  scope?: "state" | "district" | "village";
   state?: string;
   district?: string;
   village?: string;
-  pincode?: string;
+
+  vegetableIds?: string[];
+
+  cursor?: string;
+  limit?: number;
+}
+
+export type SellerVerificationStatus = "PENDING" | "VERIFIED" | "REJECTED";
+
+export interface SellerApply {
+  businessType: string;
+  documents: {
+    type: string;
+    url: string;
+  }[];
+  location: {
+    stateId: string;
+    districtId: string;
+    villageId: string;
+    pincode: string;
+  };
+  geoLocation?: {
+    type: "Point";
+    coordinates: number[];
+  };
 }

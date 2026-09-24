@@ -285,7 +285,7 @@ export default function SellerDetailsStep({
             "
           />
 
-          <select
+          {/* <select
             value={
               form.preferredLanguage
             }
@@ -335,7 +335,7 @@ export default function SellerDetailsStep({
                 </option>
               ),
             )}
-          </select>
+          </select> */}
         </div>
       </div>
 

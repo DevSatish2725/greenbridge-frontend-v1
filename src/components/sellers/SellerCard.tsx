@@ -2,30 +2,30 @@ import { getCallSellerId, SellerCardProps } from "@/types/seller.types";
 import Image from "next/image";
 import Link from "next/link";
 import CallSellerButton from "../ui/CallSellerButton";
-
-const vegetableEmoji: Record<string, string> = {
-  Tomato: "🍅",
-  Potato: "🥔",
-  Onion: "🧅",
-  Carrot: "🥕",
-  Cabbage: "🥬",
-  Chilli: "🌶️",
-  Cucumber: "🥒",
-  Eggplant: "🍆",
-};
+import { Bookmark, Package } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 export default function SellerCard({
   seller,
+  isProcessing,
+  isSaved,
   getCallSellerId,
   isLoading,
+  handleSaveToggle,
   guestCallModalOpen,
 }: {
   seller: SellerCardProps;
+  isProcessing: boolean;
+  isSaved?: boolean;
   getCallSellerId: getCallSellerId;
   isLoading: boolean;
   guestCallModalOpen: (sellerName: string, sellerId: string) => void;
+  handleSaveToggle: (sellerId: string) => void;
 }) {
+  const t = useTranslations("FindSellers");
   const visibleVegetables = seller.vegetables.slice(0, 3);
+
+  console.log("visibleVegetables", visibleVegetables);
 
   const remainingCount = seller.vegetables.length - visibleVegetables.length;
 
@@ -91,7 +91,7 @@ export default function SellerCard({
                     sm:text-xs
                   "
                 >
-                  ✓ Verified
+                  ✓ {t("sellers.verified")}
                 </span>
               )}
             </div>
@@ -117,191 +117,259 @@ export default function SellerCard({
                 <>
                   <span className="text-text-muted">•</span>
 
-                  <span>📍 {seller.distanceInKm.toFixed(1)} km away</span>
+                  <span>
+                    📍{" "}
+                    {t("sellers.distanceAway", {
+                      distance: seller.distanceInKm.toFixed(1),
+                    })}
+                  </span>
                 </>
               )}
             </div>
           </div>
         </div>
 
-        {/* Rating */}
-        <div className="shrink-0 text-right">
-          {seller.reputation?.averageRating !== undefined && (
-            <p
-              className="
-                text-sm
-                font-bold
-                text-warning
-                sm:text-base
-              "
-            >
-              ★{" "}
-              <span className="text-text-primary">
-                {seller.reputation.averageRating.toFixed(1)}
-              </span>
-            </p>
-          )}
+        <div className="flex">
+          {/* Rating */}
+          <div className="shrink-0 text-right">
+            {seller.ratingCount > 0 ? (
+              <>
+                <span className="text-[#efa536]">★</span>
 
-          {seller.reputation?.totalDeals !== undefined && (
-            <p
-              className="
-                mt-0.5
-                text-[10px]
-                text-text-muted
-                sm:text-xs
-              "
-            >
-              {seller.reputation.totalDeals} deals
-            </p>
-          )}
+                <span className="font-semibold text-[#17201a]">
+                  {seller.averageRating.toFixed(1)}
+                </span>
+
+                <span className="text-[#536157]">({seller.ratingCount})</span>
+              </>
+            ) : (
+              <span className="text-[#536157]">
+                {t("sellers.noRatingsYet")}
+              </span>
+            )}
+          </div>{" "}
+          |
+          <button
+            type="button"
+            onClick={() => handleSaveToggle(seller.sellerId)}
+            disabled={isProcessing}
+            aria-label={isSaved ? "Remove from saved sellers" : "Save seller"}
+            title={isSaved ? "Remove saved seller" : "Save seller"}
+            className="
+      flex
+      h-9
+      w-9
+      shrink-0
+      justify-center
+      items-center
+      rounded-full
+      transition
+      hover:bg-primary-light
+      disabled:cursor-not-allowed
+      disabled:opacity-50
+    "
+          >
+            <Bookmark
+              size={20}
+              className={
+                isSaved ? "fill-primary text-primary" : "text-text-secondary"
+              }
+            />
+          </button>
         </div>
       </div>
 
       {/* Available today */}
+      {/* Available vegetables */}
       <div
         className="
-          mt-3
-          rounded-xl
-          bg-surface-muted
-          p-2.5
-        "
+    mt-3
+    rounded-xl
+    border border-primary/10
+    bg-surface-muted
+    p-3
+  "
       >
-        <div
-          className="
-            mb-2
-            flex items-center
-            justify-between
-            gap-2
+        {/* Section header */}
+        <div className="mb-2.5 flex items-center justify-between gap-3">
+          <div className="flex min-w-0 items-center gap-2">
+            <div
+              className="
+          flex h-7 w-7 shrink-0
+          items-center justify-center
+          rounded-lg
+          bg-primary-light
+          text-primary
+        "
+            >
+              <Package className="h-4 w-4" />
+            </div>
+
+              <p
+                className="
+            text-xs
+            font-bold
+            text-text-primary
+            sm:text-sm
           "
-        >
-          <p
-            className="
-              text-xs
-              font-bold
-              text-success
-              sm:text-sm
-            "
-          >
-            🌱 Available Today
-          </p>
+              >
+                {t("sellers.availableToday")}
+              </p>
+          </div>
 
           {remainingCount > 0 && (
             <Link
               href={`/sellers/${seller.sellerId}`}
               className="
-                rounded-full
-                bg-primary-light
-                px-2.5
-                py-1
-                text-[10px]
-                font-semibold
-                text-success
-                transition-colors
-                hover:bg-background
-                sm:text-xs
-              "
+          shrink-0
+          rounded-full
+          bg-primary-light
+          px-2.5 py-1.5
+          text-[10px]
+          font-semibold
+          text-success
+          transition-colors
+          hover:bg-primary/10
+          sm:text-xs
+        "
             >
-              +{remainingCount} more ›
+              +{t("sellers.more", { count: remainingCount })} ›
             </Link>
           )}
         </div>
 
-        {/* Vegetables */}
-        <div className="grid grid-cols-3 gap-2">
+        {/* Vegetable preview cards */}
+        <div
+          className="
+      grid
+      grid-cols-1
+      gap-2
+      sm:grid-cols-3
+    "
+        >
           {visibleVegetables.map((vegetable) => (
             <div
               key={vegetable.id}
               className="
-                  flex min-w-0
-                  items-center
-                  gap-2
-                  rounded-lg
-                  bg-surface
-                  p-2
-                  shadow-sm
-                "
+          flex
+          min-w-0
+          items-center
+          gap-2.5
+          rounded-xl
+          border
+          border-border/70
+          bg-surface
+          p-2
+        "
             >
               {/* Vegetable image */}
               <div
                 className="
-                    flex h-11 w-11
-                    shrink-0
-                    items-center
-                    justify-center
-                    overflow-hidden
-                    rounded-lg
-                    text-2xl
-                    sm:h-12 sm:w-12
-                  "
+            relative
+            h-14 w-14
+            shrink-0
+            overflow-hidden
+            rounded-lg
+            bg-white
+          "
               >
-                {vegetable.image ? (
+                {vegetable.imageUrl ? (
                   <Image
-                    src={vegetable.image}
+                    src={vegetable.imageUrl}
                     alt={vegetable.name}
-                    width={48}
-                    height={48}
-                    className="h-full w-full object-cover"
+                    fill
+                    sizes="56px"
+                    className="
+                object-contain
+                p-0.5
+              "
                   />
                 ) : (
-                  <span aria-hidden="true">
-                    {vegetableEmoji[vegetable.name] ?? "🥬"}
-                  </span>
+                  <div
+                    className="
+                flex
+                h-full w-full
+                items-center justify-center
+                text-2xl
+              "
+                  >
+                    🥬
+                  </div>
                 )}
               </div>
 
               {/* Vegetable information */}
-              <div className="min-w-0">
+              <div className="min-w-0 flex-1">
+                {/* Name */}
                 <p
+                  title={vegetable.name}
                   className="
-                      truncate
-                      text-[11px]
-                      font-bold
-                      text-text-primary
-                      sm:text-xs
-                    "
+              truncate
+              text-xs
+              font-bold
+              leading-tight
+              text-text-primary
+              sm:text-sm
+            "
                 >
                   {vegetable.name}
                 </p>
 
-                <p
-                  className="
-                      mt-0.5
-                      whitespace-nowrap
-                      text-xs
-                      font-bold
-                      text-primary
-                      sm:text-sm
-                    "
-                >
-                  ₹{vegetable.sellerPrice}
+                {/* Price */}
+                <div className="mt-1 flex items-baseline">
                   <span
                     className="
-                        font-medium
-                        text-text-secondary
-                      "
+                text-base
+                font-extrabold
+                leading-none
+                text-primary
+                sm:text-lg
+              "
+                  >
+                    ₹{vegetable.sellerPrice}
+                  </span>
+
+                  <span
+                    className="
+                ml-0.5
+                text-[10px]
+                font-medium
+                text-text-secondary
+                sm:text-xs
+              "
                   >
                     /{vegetable.unit.toLowerCase()}
                   </span>
-                </p>
+                </div>
 
-                <span
+                {/* Quantity */}
+                <div
                   className="
-                      mt-1
-                      inline-block
-                      whitespace-nowrap
-                      rounded
-                      bg-primary-light
-                      px-1.5
-                      py-0.5
-                      text-[8px]
-                      font-medium
-                      text-success
-                      sm:text-[9px]
-                    "
+              mt-1.5
+              flex
+              items-center
+              gap-1.5
+              text-[10px]
+              text-text-secondary
+              sm:text-[11px]
+            "
                 >
-                  {vegetable.availableQty} {vegetable.unit.toLowerCase()}{" "}
-                  available
-                </span>
+                  <Package
+                    className="
+                h-3.5 w-3.5
+                shrink-0
+                text-primary
+              "
+                    strokeWidth={2}
+                  />
+
+                  <span className="truncate">
+                    <span className="font-semibold text-text-primary">
+                      {vegetable.availableQty} {vegetable.unit.toLowerCase()}
+                    </span>{" "}
+                    {t("sellers.available")}
+                  </span>
+                </div>
               </div>
             </div>
           ))}
@@ -314,7 +382,9 @@ export default function SellerCard({
           sellerId={seller.sellerId}
           getCallSellerId={getCallSellerId}
           isLoading={isLoading}
-          guestCallModalOpen={() => guestCallModalOpen(seller.sellerId, seller.fullName)}
+          guestCallModalOpen={() =>
+            guestCallModalOpen(seller.sellerId, seller.fullName)
+          }
         />
         <Link
           href={`/sellers/${seller.sellerId}`}
@@ -334,7 +404,7 @@ export default function SellerCard({
             hover:bg-accent-light
           "
         >
-          🏪 View Shop
+          🏪 {t("sellers.viewShop")}
         </Link>
       </div>
     </article>

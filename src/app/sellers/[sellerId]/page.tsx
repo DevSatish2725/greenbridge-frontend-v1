@@ -1,18 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { useMemo, useState } from "react";
 
 import { Leaf, Search } from "lucide-react";
 import { useParams, useRouter } from "next/navigation";
 
 import SellerShopHeader from "@/components/sellers/shop/SellerShopHeader";
-import SellerReviews from "@/components/sellers/shop/SellerReviews";
 import VegetableCard from "@/components/sellers/shop/VegetableCard";
 import { useQuery } from "@tanstack/react-query";
 import { sellerService } from "@/services/seller.service";
 import { SellerShopData } from "@/types/seller-shop.types";
 import GuestCallModal from "@/components/sellers/GuestCallModal";
 import CallSellerCard from "@/components/sellers/CallSellerCard";
+import { sellerRatingService } from "@/services/seller-rating.service";
+import { useAuth } from "@/providers/AuthProvider";
+import SellerRatingSection from "@/components/seller-rating/SellerRatingSection";
+import { useSaveSeller } from "@/hooks/useSaveSeller";
+import { savedSellerService } from "@/services/saved-seller.service";
+import { useTranslations } from "next-intl";
+import { VegetableResponse } from "@/types/vegetable.types";
 
 export default function SellerShopPage() {
   const [search, setSearch] = useState("");
@@ -28,6 +34,10 @@ export default function SellerShopPage() {
   const sellerId = params.sellerId;
 
   const router = useRouter();
+  const { user, isLoading: isAuthLoading } = useAuth();
+
+  const t = useTranslations("SellerShop");
+  const tc = useTranslations("Common");
 
   const getCallSellerId = (sellerId: string) => {
     setCallSellerId(sellerId);
@@ -57,30 +67,86 @@ export default function SellerShopPage() {
     data: seller,
     isLoading,
     isError,
-    error,
   } = useQuery<SellerShopData>({
     queryKey: ["seller-shop", sellerId],
 
     queryFn: () => sellerService.getSellerShop(sellerId),
 
-    enabled: Boolean(sellerId),
+    enabled: Boolean(sellerId) && !isAuthLoading,
 
     staleTime: 1000 * 60 * 2,
   });
 
-  if (isLoading) {
-    return <p>Loading...</p>;
+  const ratingSummaryQuery = useQuery({
+    queryKey: ["seller-rating-summary", sellerId],
+    queryFn: () => sellerRatingService.getRatingSummary(sellerId),
+  });
+
+  const { saveSeller, removeSeller } = useSaveSeller();
+
+  const savedSellersQuery = useQuery({
+    queryKey: ["saved-sellers"],
+    queryFn: savedSellerService.getSavedSellers,
+  });
+
+  const matchesVegetableSearch = (
+    vegetable: VegetableResponse,
+    search: string,
+  ) => {
+    const query = search.trim().toLocaleLowerCase();
+
+    if (!query) {
+      return true;
+    }
+
+    const searchableValues = [
+      vegetable.name,
+      vegetable.displayNames?.en,
+      vegetable.displayNames?.hi,
+      ...(vegetable.searchAliases ?? []),
+    ];
+
+    return searchableValues.some((value) =>
+      value?.toLocaleLowerCase().includes(query),
+    );
+  };
+
+  const filteredVegetables = useMemo(() => {
+    return seller?.inventory.items.filter((vegetable) => {
+      return matchesVegetableSearch(vegetable, search);
+    });
+  }, [seller?.inventory.items, search]);
+
+  if (isLoading || ratingSummaryQuery.isLoading) {
+    return <p>{tc("loading")}</p>;
   }
 
   if (isError || !seller) {
-    return <p>Unable to load shop</p>;
+    return <p>{t("unableToLoadShop")}</p>;
   }
 
-  console.log("seller shop data", seller);
+  if (ratingSummaryQuery.isError) {
+    return <p>{t("unableToLoadRatingSummary")}</p>;
+  }
 
-  const filteredVegetables = seller.inventory.items.filter((vegetable) =>
-    vegetable.vegetableName.toLowerCase().includes(search.trim().toLowerCase()),
+  const savedSellerIds = new Set(
+    savedSellersQuery.data?.map((seller) => seller.sellerProfileId) ?? [],
   );
+
+  const handleSaveToggle = () => {
+    if (!user) {
+      router.push("/login");
+      return;
+    }
+
+    const isSaved = savedSellerIds.has(sellerId);
+
+    if (isSaved) {
+      removeSeller(sellerId);
+    } else {
+      saveSeller(sellerId);
+    }
+  };
 
   return (
     <main className="min-h-screen bg-background pb-10">
@@ -113,8 +179,12 @@ export default function SellerShopPage() {
                 location: {
                   ...seller.seller.location,
                 },
-                reputation: {
-                  averageRating: seller.seller.reputation.averageRating ?? 0,
+                isSaved: savedSellerIds.has(sellerId),
+                shopOwner: seller.seller.shopOwner,
+                sellerRatingSummary: {
+                  averageRating: ratingSummaryQuery.data!.averageRating,
+                  ratingCount: ratingSummaryQuery.data!.ratingCount,
+                  tagCounts: ratingSummaryQuery.data!.tagCounts,
                 },
               }}
               sellerId={sellerId}
@@ -122,7 +192,7 @@ export default function SellerShopPage() {
               getCallSellerId={getCallSellerId}
               guestCallModalOpen={guestCallModalOpen}
               onSave={() => {
-                console.log("save");
+                handleSaveToggle();
               }}
               onWhatsApp={() => {
                 console.log("whatsapp");
@@ -131,10 +201,17 @@ export default function SellerShopPage() {
 
             {/* Reviews desktop only */}
             <div className="hidden lg:block">
-              {/* <SellerReviews
-                reviews={seller.reviews}
-                totalReviews={seller.reputation.totalReviews}
-              /> */}
+              <SellerRatingSection
+                sellerId={sellerId}
+                isLoggedIn={Boolean(user)}
+                sellerRatingSummary={{
+                  averageRating: ratingSummaryQuery.data!.averageRating,
+                  ratingCount: ratingSummaryQuery.data!.ratingCount,
+                  tagCounts: ratingSummaryQuery.data!.tagCounts,
+                  isLoading: ratingSummaryQuery.isLoading,
+                  isError: ratingSummaryQuery.isError,
+                }}
+              />
             </div>
           </div>
 
@@ -187,7 +264,7 @@ export default function SellerShopPage() {
                     text-text-primary
                   "
                     >
-                      Available Today
+                      {t("availableToday")}
                     </h2>
 
                     <p
@@ -196,7 +273,11 @@ export default function SellerShopPage() {
                     text-text-secondary
                   "
                     >
-                      {seller.inventory.items.length} vegetables available
+                      {seller.inventory.items.length === 1
+                        ? t("vegetableAvailableToday", { count: 1 })
+                        : t("vegetablesAvailableToday", {
+                            count: seller.inventory.items.length,
+                          })}
                     </p>
                   </div>
                 </div>
@@ -223,7 +304,7 @@ export default function SellerShopPage() {
                     type="search"
                     value={search}
                     onChange={(event) => setSearch(event.target.value)}
-                    placeholder="Search in this shop..."
+                    placeholder={t("searchInShop")}
                     className="
                   h-11
                   w-full
@@ -254,12 +335,12 @@ export default function SellerShopPage() {
               xl:grid-cols-3
             "
               >
-                {filteredVegetables.map((vegetable) => (
+                {filteredVegetables?.map((vegetable) => (
                   <VegetableCard key={vegetable.itemId} vegetable={vegetable} />
                 ))}
               </div>
 
-              {filteredVegetables.length === 0 && (
+              {filteredVegetables?.length === 0 && (
                 <div
                   className="
                 mt-5

@@ -12,8 +12,16 @@ import Input from "@/components/ui/Input";
 
 import { authService } from "@/services/auth.service";
 import { useAuth } from "@/providers/AuthProvider";
+import Dropdown from "../ui/Dropdown";
+import { SupportedLanguage } from "@/types/common.types";
+import { languages } from "@/constants/common.constants";
+import { setClientLanguage } from "@/utils/language.utils";
+import { useTranslations } from "next-intl";
 
 export default function RegisterForm() {
+  const [selectedLanguage, setSelectedLanguage] =
+    useState<SupportedLanguage>("en");
+
   const router = useRouter();
   const searchParams = useSearchParams();
   const { accessTokenSetter, getUserProfile } = useAuth();
@@ -25,24 +33,32 @@ export default function RegisterForm() {
   const [fullName, setFullName] = useState("");
   const [error, setError] = useState("");
 
+  const t = useTranslations("Register");
+
+  const languageChangeHandler = (language: SupportedLanguage) => {
+    setSelectedLanguage(language);
+  };
+
   const registerMutation = useMutation({
     mutationFn: authService.completeRegistration,
 
     onSuccess: async (response) => {
       accessTokenSetter(response.data.accessToken);
+      if (response.data.user.preferredLanguage) {
+        setClientLanguage(response.data.user.preferredLanguage);
+      }
       await getUserProfile();
+      router.refresh();
       router.replace(returnTo);
     },
 
     onError: (error) => {
-      console.log("register error", error);
       if (axios.isAxiosError(error)) {
-        setError(error.response?.data?.message ?? "खाता बनाने में समस्या हुई।");
-
+        setError(error.response?.data?.message ?? t("createAccountError"));
         return;
       }
 
-      setError("Something went wrong.");
+      setError(t("somethingWentWrong"));
     },
   });
 
@@ -52,13 +68,12 @@ export default function RegisterForm() {
     const name = fullName.trim();
 
     if (name.length < 2) {
-      setError("कृपया अपना नाम दर्ज करें।");
+      setError(t("fullNameRequired"));
       return;
     }
 
     if (!registrationToken) {
-      setError("Registration session expired. Please verify your phone again.");
-
+      setError(t("registrationSessionExpired"));
       return;
     }
 
@@ -66,6 +81,7 @@ export default function RegisterForm() {
 
     registerMutation.mutate({
       fullName: name,
+      preferredLanguage: selectedLanguage,
       registrationToken,
     });
   };
@@ -80,10 +96,10 @@ export default function RegisterForm() {
     >
       <Input
         id="fullName"
-        label="पूरा नाम · Full name"
+        label={t("fullName")}
         type="text"
         autoComplete="name"
-        placeholder="अपना नाम दर्ज करें"
+        placeholder={t("fullNamePlaceholder")}
         value={fullName}
         error={error}
         disabled={registerMutation.isPending}
@@ -93,15 +109,28 @@ export default function RegisterForm() {
         }}
       />
 
+      <div className="mt-2">
+        <label className="mb-2 block text-sm font-medium text-text-primary">
+          {t("preferredLanguage")}
+        </label>
+        <Dropdown
+          value={selectedLanguage}
+          options={languages}
+          onChange={(value) =>
+            languageChangeHandler(value as SupportedLanguage)
+          }
+          getOptionLabel={(option) => option.label}
+          getOptionValue={(option) => option.value}
+        />
+      </div>
+
       <Button
         type="submit"
         fullWidth
         className="mt-6"
         disabled={registerMutation.isPending}
       >
-        {registerMutation.isPending
-          ? "खाता बना रहे हैं..."
-          : "जारी रखें · Continue"}
+        {registerMutation.isPending ? t("creatingAccount") : t("continue")}
       </Button>
     </form>
   );

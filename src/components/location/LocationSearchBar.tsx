@@ -1,13 +1,12 @@
 "use client";
 
-import { useState } from "react";
-
 import { useQuery } from "@tanstack/react-query";
+import { Search } from "lucide-react";
+import { useTranslations } from "next-intl";
 
 import SearchableLocationField from "./SearchableLocationField";
 
 import { useDebounce } from "@/hooks/useDebounce";
-
 import { locationService } from "@/services/location.service";
 
 import type {
@@ -18,66 +17,56 @@ import type {
 } from "@/types/location.types";
 
 interface LocationSearchBarProps {
-  onSearch: (location: ManualLocation) => void;
-
-  onClear?: () => void;
+  handleStateSelect: (selectedState: StateOption) => void;
+  handleDistrictSelect: (selectedDistrict: DistrictOption) => void;
+  handleVillageSelect: (selectedVillage: VillageOption) => void;
+  handleDistrictSearch: (district: string) => void;
+  handleVillageSearch: (village: string) => void;
+  selectedState: StateOption | null;
+  selectedDistrict: DistrictOption | null;
+  selectedVillage: VillageOption | null;
+  districtSearch: string;
+  villageSearch: string;
 }
 
 export default function LocationSearchBar({
-  onSearch,
-  onClear,
+  handleStateSelect,
+  handleDistrictSelect,
+  handleVillageSelect,
+  handleDistrictSearch,
+  handleVillageSearch,
+  selectedState,
+  selectedDistrict,
+  selectedVillage,
+  districtSearch,
+  villageSearch,
 }: LocationSearchBarProps) {
-  const [selectedState, setSelectedState] = useState<StateOption | null>(null);
-
-  const [selectedDistrict, setSelectedDistrict] =
-    useState<DistrictOption | null>(null);
-
-  const [selectedVillage, setSelectedVillage] = useState<VillageOption | null>(
-    null,
-  );
-
-  const [districtSearch, setDistrictSearch] = useState("");
-
-  const [villageSearch, setVillageSearch] = useState("");
-
-  const [activeLocation, setActiveLocation] = useState<ManualLocation | null>(
-    null,
-  );
-
   const debouncedDistrictSearch = useDebounce(districtSearch, 300);
 
   const debouncedVillageSearch = useDebounce(villageSearch, 300);
 
-  // -------------------------
-  // States
-  // -------------------------
+  const t = useTranslations("FindSellers");
 
+  // States
   const statesQuery = useQuery({
     queryKey: ["locations", "states"],
-
     queryFn: locationService.getStates,
-
     staleTime: 1000 * 60 * 60,
   });
 
-  // -------------------------
-  // District server search
-  // -------------------------
-
+  // District search
   const districtsQuery = useQuery({
     queryKey: [
       "locations",
       "districts",
-      selectedState?._id,
+      selectedState?.id,
       debouncedDistrictSearch,
     ],
 
     queryFn: () =>
       locationService.searchDistricts({
-        stateId: selectedState!._id,
-
+        stateId: selectedState!.id,
         search: debouncedDistrictSearch,
-
         limit: 20,
       }),
 
@@ -87,24 +76,19 @@ export default function LocationSearchBar({
     staleTime: 1000 * 60 * 10,
   });
 
-  // -------------------------
-  // Village server search
-  // -------------------------
-
+  // Village search
   const villagesQuery = useQuery({
     queryKey: [
       "locations",
       "villages",
-      selectedDistrict?._id,
+      selectedDistrict?.id,
       debouncedVillageSearch,
     ],
 
     queryFn: () =>
       locationService.searchVillages({
-        districtId: selectedDistrict!._id,
-
+        districtId: selectedDistrict!.id,
         search: debouncedVillageSearch,
-
         limit: 20,
       }),
 
@@ -114,94 +98,47 @@ export default function LocationSearchBar({
     staleTime: 1000 * 60 * 10,
   });
 
-  const handleStateSelect = (state: StateOption) => {
-    setSelectedState(state);
-
-    setSelectedDistrict(null);
-    setSelectedVillage(null);
-
-    setDistrictSearch("");
-    setVillageSearch("");
-  };
-
-  const handleDistrictSelect = (district: DistrictOption) => {
-    setSelectedDistrict(district);
-
-    setSelectedVillage(null);
-    setVillageSearch("");
-  };
-
   const handleSearch = () => {
     if (!selectedState) {
       return;
     }
 
     const location: ManualLocation = {
-      stateId: selectedState._id,
-
+      stateId: selectedState.id,
       stateName: selectedState.name,
 
       ...(selectedDistrict && {
-        districtId: selectedDistrict._id,
-
+        districtId: selectedDistrict.id,
         districtName: selectedDistrict.name,
       }),
 
       ...(selectedVillage && {
-        villageId: selectedVillage._id,
-
+        villageId: selectedVillage.id,
         villageName: selectedVillage.name,
       }),
     };
 
-    setActiveLocation(location);
-
-    onSearch(location);
-  };
-
-  const handleClear = () => {
-    setSelectedState(null);
-    setSelectedDistrict(null);
-    setSelectedVillage(null);
-
-    setDistrictSearch("");
-    setVillageSearch("");
-
-    setActiveLocation(null);
-
-    onClear?.();
+    // onSearch(location);
   };
 
   return (
-    <section className="mt-6">
-      {!selectedState ? (
-        <p
-          className="
-                mt-1
-                text-sm
-                text-text-secondary
-              "
-        >
-          Select at least a state to start searching.
+    <section>
+      {!selectedState && (
+        <p className="mb-3 text-xs text-text-secondary">
+          {t("location.selectStateHint")}
         </p>
-      ) : null}
+      )}
+
       <div
         className="
-          grid
-          grid-cols-1
-          gap-4
-
-          md:grid-cols-2
-
-          xl:grid-cols-[1fr_1fr_1fr_auto]
-          xl:items-end
+          grid grid-cols-1 gap-3
         "
       >
         {/* State */}
-
         <SearchableLocationField
-          label="State"
-          placeholder="Search state..."
+          key={selectedState?.id ?? "no-state"}
+          label={t("location.state")}
+          placeholder={t("location.searchState")}
           options={statesQuery.data ?? []}
           value={selectedState}
           isLoading={statesQuery.isLoading}
@@ -210,173 +147,41 @@ export default function LocationSearchBar({
         />
 
         {/* District */}
-
         <SearchableLocationField
-          label="District"
+          key={selectedDistrict?.id ?? "no-district"}
+          label={t("location.district")}
           placeholder={
-            selectedState ? "Search district..." : "Select state first"
+            selectedState
+              ? t("location.searchDistrict")
+              : t("location.selectStateFirst")
           }
           value={selectedDistrict}
           options={districtsQuery.data ?? []}
           disabled={!selectedState}
           isLoading={districtsQuery.isFetching}
           minimumSearchLength={2}
-          onSearchChange={setDistrictSearch}
+          onSearchChange={handleDistrictSearch}
           onSelect={handleDistrictSelect}
         />
 
         {/* Village */}
-
         <SearchableLocationField
-          label="Village / Area"
+          key={selectedVillage?.id ?? "no-village"}
+          label={t("location.village")}
           placeholder={
             selectedDistrict
-              ? "Search village or area..."
-              : "Select district first"
+              ? t("location.searchVillageOrArea")
+              : t("location.selectDistrictFirst")
           }
           value={selectedVillage}
           options={villagesQuery.data ?? []}
           disabled={!selectedDistrict}
           isLoading={villagesQuery.isFetching}
           minimumSearchLength={2}
-          onSearchChange={setVillageSearch}
-          onSelect={setSelectedVillage}
+          onSearchChange={handleVillageSearch}
+          onSelect={handleVillageSelect}
         />
-
-        {/* Search */}
-
-        <button
-          type="button"
-          disabled={!selectedState}
-          onClick={handleSearch}
-          className="
-            flex
-            h-12
-            min-w-48
-            items-center
-            justify-center
-            gap-2
-            rounded-xl
-            bg-primary
-            px-6
-            text-sm
-            font-bold
-            text-white
-            transition
-
-            hover:bg-primary-hover
-
-            disabled:cursor-not-allowed
-            disabled:opacity-50
-          "
-        >
-          <span className="text-lg">⌖</span>
-          Search Sellers
-        </button>
       </div>
-
-      {/* Active location */}
-
-      {activeLocation && (
-        <div
-          className="
-            mt-4
-            flex
-            flex-col
-            gap-3
-            border-t
-            border-primary/10
-            pt-4
-
-            sm:flex-row
-            sm:items-center
-            sm:justify-between
-          "
-        >
-          <div
-            className="
-              flex
-              flex-wrap
-              items-center
-              gap-2
-              text-sm
-              text-text-secondary
-            "
-          >
-            <span
-              className="
-                font-bold
-                text-primary
-              "
-            >
-              ●
-            </span>
-
-            <span>Searching in:</span>
-
-            <span
-              className="
-                font-semibold
-                text-text-primary
-              "
-            >
-              {activeLocation.stateName}
-            </span>
-
-            {activeLocation.districtName && (
-              <>
-                <span className="text-text-muted">›</span>
-
-                <span
-                  className="
-                    font-semibold
-                    text-text-primary
-                  "
-                >
-                  {activeLocation.districtName}
-                </span>
-              </>
-            )}
-
-            {activeLocation.villageName && (
-              <>
-                <span className="text-text-muted">›</span>
-
-                <span
-                  className="
-                    font-semibold
-                    text-text-primary
-                  "
-                >
-                  {activeLocation.villageName}
-                </span>
-              </>
-            )}
-          </div>
-
-          <button
-            type="button"
-            onClick={handleClear}
-            className="
-              flex
-              items-center
-              gap-2
-              self-start
-              text-sm
-              font-medium
-              text-text-secondary
-              transition
-
-              hover:text-error
-
-              sm:self-auto
-            "
-          >
-            Clear Location
-            <span aria-hidden="true">×</span>
-          </button>
-        </div>
-      )}
     </section>
   );
 }

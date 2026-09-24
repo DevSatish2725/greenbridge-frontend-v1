@@ -1,3 +1,6 @@
+import { SupportedLanguage } from "./common.types";
+import { SellerVerificationStatus } from "./seller.types";
+
 export interface SendOtpPayload {
   mobileNumber: string;
 }
@@ -9,15 +12,46 @@ export interface VerifyOtpPayload {
 
 export interface RegisterPayload {
   fullName: string;
+  preferredLanguage: SupportedLanguage
   registrationToken: string;
 }
 
+export interface UserLocation {
+  state: {
+    id: string;
+    name: string;
+  };
+  district: {
+    id: string;
+    name: string;
+  };
+  village: {
+    id: string;
+    name: string;
+  };
+  pincode: string;
+}
+
+export interface SellerProfile {
+  sellerId: string;
+  verificationStatus: SellerVerificationStatus;
+  rejectionReason: string | null;
+  reviewedAt: string | null;
+  businessType: string;
+}
 export interface AuthUser {
   id: string;
   fullName: string;
   mobileNumber: string;
   isPhoneVerified: boolean;
-  sellerProfile: {sellerId: string} | null
+  preferredLanguage: SupportedLanguage;
+  location: UserLocation;
+  geoLocation: {
+    type: "Point";
+    coordinates: [number, number];
+  };
+  status: string;
+  sellerProfile: SellerProfile | null;
 }
 
 export interface SendOtpResponse {

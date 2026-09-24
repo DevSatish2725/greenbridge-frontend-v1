@@ -10,6 +10,7 @@ import Button from "@/components/ui/Button";
 import Input from "@/components/ui/Input";
 
 import { authService } from "@/services/auth.service";
+import { useTranslations } from "next-intl";
 
 export default function RegisterMobileForm() {
   const router = useRouter();
@@ -17,6 +18,8 @@ export default function RegisterMobileForm() {
 
   const [mobileNumber, setMobileNumber] = useState("");
   const [error, setError] = useState("");
+
+  const t = useTranslations("Register");
 
   const returnTo = searchParams.get("returnTo") || "/sellers";
 
@@ -29,37 +32,27 @@ export default function RegisterMobileForm() {
         returnTo,
       });
 
-      router.push(
-        `/register/verify-otp?${params.toString()}`,
-      );
+      router.push(`/register/verify-otp?${params.toString()}`);
     },
 
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        setError(
-          error.response?.data?.message ??
-            "OTP भेजने में समस्या हुई।",
-        );
+        setError(error.response?.data?.message ?? t("sendOtpError"));
 
         return;
       }
 
-      setError("Something went wrong.");
+      setError(t("somethingWentWrong"));
     },
   });
 
-  const handleSubmit = (
-    event: FormEvent<HTMLFormElement>,
-  ) => {
+  const handleSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    const cleanedMobileNumber =
-      mobileNumber.replace(/\D/g, "");
+    const cleanedMobileNumber = mobileNumber.replace(/\D/g, "");
 
     if (!/^[6-9]\d{9}$/.test(cleanedMobileNumber)) {
-      setError(
-        "कृपया सही 10 अंकों का मोबाइल नंबर दर्ज करें।",
-      );
+      setError(t("invalidMobileNumber"));
 
       return;
     }
@@ -82,19 +75,17 @@ export default function RegisterMobileForm() {
       <div>
         <Input
           id="mobileNumber"
-          label="मोबाइल नंबर · Mobile number"
+          label={t("mobileNumber")}
           type="tel"
           inputMode="numeric"
           autoComplete="tel"
-          placeholder="9876543210"
+          placeholder={t("mobilePlaceholder")}
           maxLength={10}
           value={mobileNumber}
           error={error}
           disabled={sendOtpMutation.isPending}
           onChange={(event) => {
-            const value = event.target.value
-              .replace(/\D/g, "")
-              .slice(0, 10);
+            const value = event.target.value.replace(/\D/g, "").slice(0, 10);
 
             setMobileNumber(value);
             setError("");
@@ -103,7 +94,7 @@ export default function RegisterMobileForm() {
       </div>
 
       <p className="mt-3 text-sm leading-6 text-text-secondary">
-        हम आपके मोबाइल नंबर को सत्यापित करने के लिए OTP भेजेंगे।
+        {t("otpHint")}
       </p>
 
       <Button
@@ -112,9 +103,7 @@ export default function RegisterMobileForm() {
         className="mt-6"
         disabled={sendOtpMutation.isPending}
       >
-        {sendOtpMutation.isPending
-          ? "OTP भेज रहे हैं..."
-          : "OTP भेजें · Send OTP"}
+        {sendOtpMutation.isPending ? t("sendingOtp") : t("sendOtp")}
       </Button>
     </form>
   );

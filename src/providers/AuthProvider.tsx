@@ -18,6 +18,13 @@ import { authService } from "@/services/auth.service";
 import type { AuthUser } from "@/types/auth.types";
 
 import { useRouter } from "next/navigation";
+import {
+  LANGUAGE_STORAGE_KEY,
+  setClientLanguage,
+} from "@/utils/language.utils";
+import { isSupportedLocale } from "@/i18n/config";
+import type { Locale } from "@/i18n/config";
+import { API_ERROR } from "@/lib/axios";
 
 interface AuthContextValue {
   user: AuthUser | null;
@@ -43,6 +50,26 @@ export default function AuthProvider({ children }: AuthProviderProps) {
 
   const router = useRouter();
 
+  const applyAuthenticatedUser = useCallback((user: AuthUser) => {
+    setUser(user);
+    const language: Locale = isSupportedLocale(user.preferredLanguage)
+      ? user.preferredLanguage
+      : "en";
+
+    setClientLanguage(language);
+  }, []);
+
+  const applyGuestLanguage = useCallback(() => {
+    const storedLanguage = localStorage.getItem(LANGUAGE_STORAGE_KEY);
+
+    const language: Locale =
+      storedLanguage && isSupportedLocale(storedLanguage)
+        ? storedLanguage
+        : "en";
+
+    setClientLanguage(language);
+  }, []);
+
   const accessTokenSetter = useCallback((accessToken: string) => {
     setAccessToken(accessToken);
   }, []);
@@ -50,19 +77,19 @@ export default function AuthProvider({ children }: AuthProviderProps) {
   const logout = useCallback(async () => {
     try {
       await authService.logout();
-      router.push("/sellers")
+      router.replace("/");
     } finally {
       setAccessToken(null);
       setUser(null);
     }
-  }, []);
+  }, [router]);
 
   const getUserProfile = useCallback(async (): Promise<AuthUser | null> => {
     try {
-      const meResponse = await authService.getMe();
+      const response = await authService.getMe();
 
-      setUser(meResponse.data);
-      return meResponse.data;
+      applyAuthenticatedUser(response.data);
+      return response.data;
     } catch (error) {
       setAccessToken(null);
       setUser(null);
@@ -74,28 +101,53 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     } finally {
       setIsLoading(false);
     }
-  }, []);
+  }, [applyAuthenticatedUser]);
 
   useEffect(() => {
     let cancelled = false;
 
     async function initializeAuth() {
       try {
-        const meResponse = await authService.getMe();
+        const response = await authService.getMe();
 
-        if (!cancelled) {
-          console.log("meResponse", meResponse);
-          setUser(meResponse.data);
+        if (cancelled) {
+          return;
         }
+
+        applyAuthenticatedUser(response.data);
       } catch (error) {
-        if (!cancelled) {
-          setAccessToken(null);
-          setUser(null);
+        if (cancelled) {
+          return;
         }
 
-        if (!axios.isAxiosError(error) || error.response?.status !== 401) {
-          console.error("Failed to restore auth session", error);
+        applyGuestLanguage();
+
+        setAccessToken(null);
+        setUser(null);
+
+        if (!axios.isAxiosError(error)) {
+          console.error("Unexpected auth initialization error:", error);
+          return;
         }
+
+        // Expected: user has no valid authenticated session
+        if (error.response?.status === 401) {
+          return;
+        }
+
+        // Backend is down / network unavailable / request couldn't reach server
+        if (!error.response) {
+          if (process.env.NODE_ENV === "development") {
+            console.warn("GreenBridge API is unavailable.");
+          }
+          return;
+        }
+
+        // Unexpected API response
+        console.error(
+          `Failed to restore auth session (${error.response.status})`,
+          error,
+        );
       } finally {
         if (!cancelled) {
           setIsLoading(false);
@@ -108,9 +160,7 @@ export default function AuthProvider({ children }: AuthProviderProps) {
     return () => {
       cancelled = true;
     };
-  }, []);
-
-  console.log("context user", user);
+  }, [applyAuthenticatedUser, applyGuestLanguage]);
 
   return (
     <AuthContext.Provider

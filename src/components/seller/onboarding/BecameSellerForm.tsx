@@ -3,13 +3,14 @@
 import { useState } from "react";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 
 import SellerDetailsStep from "./SellerDetailsStep";
 import SellerLocationStep from "./SellerLocationStep";
 
 import { sellerService } from "@/services/seller.service";
 import { useAuth } from "@/providers/AuthProvider";
+import { API_ERROR } from "@/lib/axios";
+import { toast } from "sonner";
 
 export type BusinessType =
   | "INDIVIDUAL_FARMER"
@@ -18,14 +19,12 @@ export type BusinessType =
   | "WHOLESALER";
 
 export interface LocationOption {
-  _id: string;
+  id: string;
   name: string;
 }
 
 export interface SellerOnboardingForm {
   businessType: BusinessType | "";
-  preferredLanguage: string;
-
   state: LocationOption | null;
   district: LocationOption | null;
   village: LocationOption | null;
@@ -40,7 +39,6 @@ export interface SellerOnboardingForm {
 
 const initialForm: SellerOnboardingForm = {
   businessType: "",
-  preferredLanguage: "",
 
   state: null,
   district: null,
@@ -54,158 +52,93 @@ const initialForm: SellerOnboardingForm = {
 export default function BecomeSellerForm() {
   const router = useRouter();
 
-  const { getUserProfile } = useAuth();
+  const { user, getUserProfile } = useAuth();
 
-  const [step, setStep] =
-    useState<1 | 2>(1);
+  const [step, setStep] = useState<1 | 2>(1);
 
-  const [form, setForm] =
-    useState<SellerOnboardingForm>(
-      initialForm,
-    );
+  const [form, setForm] = useState<SellerOnboardingForm>(initialForm);
 
-  const [error, setError] =
-    useState("");
+  const [error, setError] = useState("");
 
-  const applyForSellerMutation =
-    useMutation({
-      mutationFn: async () => {
-        if (
-          !form.businessType ||
-          !form.preferredLanguage ||
-          !form.state ||
-          !form.district ||
-          !form.village ||
-          !form.pincode
-        ) {
-          throw new Error(
-            "Please complete all required fields.",
-          );
-        }
+  const applyForSellerMutation = useMutation({
+    mutationFn: async () => {
+      if (
+        !form.businessType ||
+        !form.state ||
+        !form.district ||
+        !form.village ||
+        !form.pincode
+      ) {
+        throw new Error("Please complete all required fields.");
+      }
 
-        const payload = {
-          businessType:
-            form.businessType,
+      const payload = {
+        businessType: form.businessType,
 
-          // Temporary until document upload/S3
-          // is implemented.
-          documents: [
-            {
-              type: "PAN",
-              url: "https://pan-card.jpg",
-            },
-          ],
-
-          preferredLanguage:
-            form.preferredLanguage,
-
-          location: {
-            state:
-              form.state.name,
-
-            district:
-              form.district.name,
-
-            village:
-              form.village.name,
-
-            pincode:
-              form.pincode,
+        // Temporary until document upload/S3
+        // is implemented.
+        documents: [
+          {
+            type: "PAN",
+            url: "https://pan-card.jpg",
           },
+        ],
 
-          ...(form.geoLocation
-            ? {
-                geoLocation: {
-                  type: "Point" as const,
+        location: {
+          stateId: form.state.id,
+          districtId: form.district.id,
+          villageId: form.village.id,
+          pincode: form.pincode,
+        },
 
-                  coordinates: [
-                    form.geoLocation
-                      .longitude,
+        ...(form.geoLocation
+          ? {
+              geoLocation: {
+                type: "Point" as const,
 
-                    form.geoLocation
-                      .latitude,
-                  ] as [
-                    number,
-                    number,
-                  ],
-                },
-              }
-            : {}),
-        };
+                coordinates: [
+                  form.geoLocation.longitude,
 
-        return sellerService.applyForSeller(
-          payload,
-        );
-      },
+                  form.geoLocation.latitude,
+                ] as [number, number],
+              },
+            }
+          : {}),
+      };
 
-      onSuccess: async () => {
-        /*
-         * SellerProfile has now been created
-         * in backend, but AuthProvider still
-         * contains the previous user with
-         * sellerProfile: null.
-         */
-        const currentUser =
-          await getUserProfile();
+      return user?.sellerProfile
+        ? sellerService.reApplyForSeller(payload)
+        : sellerService.applyForSeller(payload);
+    },
 
-        if (
-          !currentUser?.sellerProfile
-        ) {
-          setError(
-            "Seller profile created but account could not be refreshed.",
-          );
+    onSuccess: async () => {
+      /*
+       * SellerProfile has now been created
+       * in backend, but AuthProvider still
+       * contains the previous user with
+       * sellerProfile: null.
+       */
+      const currentUser = await getUserProfile();
 
-          return;
-        }
+      if (!currentUser?.sellerProfile) {
+        setError("Seller profile created but account could not be refreshed.");
 
-        router.replace(
-          "/seller/dashboard",
-        );
-      },
+        return;
+      }
 
-      onError: (error) => {
-        if (
-          axios.isAxiosError(error)
-        ) {
-          setError(
-            error.response?.data
-              ?.message ??
-              "Something went wrong.",
-          );
+      router.replace("/seller/dashboard");
+    },
 
-          return;
-        }
-
-        if (
-          error instanceof Error
-        ) {
-          setError(error.message);
-          return;
-        }
-
-        setError(
-          "Something went wrong.",
-        );
-      },
-    });
+    onError: (error: API_ERROR) => {
+      toast.error(error.response?.data.message ?? "Something went wrong.");
+    },
+  });
 
   const handleContinue = () => {
     setError("");
 
     if (!form.businessType) {
-      setError(
-        "Please select your business type.",
-      );
-
-      return;
-    }
-
-    if (
-      !form.preferredLanguage
-    ) {
-      setError(
-        "Please select your preferred language.",
-      );
+      setError("Please select your business type.");
 
       return;
     }
@@ -216,26 +149,14 @@ export default function BecomeSellerForm() {
   const handleSubmit = () => {
     setError("");
 
-    if (
-      !form.state ||
-      !form.district ||
-      !form.village
-    ) {
-      setError(
-        "Please select your complete location.",
-      );
+    if (!form.state || !form.district || !form.village) {
+      setError("Please select your complete location.");
 
       return;
     }
 
-    if (
-      !/^\d{6}$/.test(
-        form.pincode,
-      )
-    ) {
-      setError(
-        "Please enter a valid 6 digit pincode.",
-      );
+    if (!/^\d{6}$/.test(form.pincode)) {
+      setError("Please enter a valid 6 digit pincode.");
 
       return;
     }
@@ -282,15 +203,12 @@ export default function BecomeSellerForm() {
               sm:text-base
             "
           >
-            Start selling your fresh
-            produce to buyers near you
+            Start selling your fresh produce to buyers near you
           </p>
         </div>
 
         {/* Stepper */}
-        <SellerStepper
-          step={step}
-        />
+        <SellerStepper step={step} />
 
         <div
           className="
@@ -316,43 +234,17 @@ export default function BecomeSellerForm() {
               <SellerDetailsStep
                 form={form}
                 setForm={setForm}
-                onContinue={
-                  handleContinue
-                }
+                onContinue={handleContinue}
               />
             ) : (
               <SellerLocationStep
                 form={form}
                 setForm={setForm}
-                onBack={() =>
-                  setStep(1)
-                }
-                onSubmit={
-                  handleSubmit
-                }
-                isSubmitting={
-                  applyForSellerMutation.isPending
-                }
+                onBack={() => setStep(1)}
+                  onSubmit={handleSubmit}
+                  isSellerProfile={Boolean(user?.sellerProfile)}
+                isSubmitting={applyForSellerMutation.isPending}
               />
-            )}
-
-            {error && (
-              <div
-                className="
-                  mt-4
-                  rounded-xl
-                  border
-                  border-red-200
-                  bg-red-50
-                  px-4
-                  py-3
-                  text-sm
-                  font-medium
-                  text-red-700
-                "
-              >
-                {error}
-              </div>
             )}
           </section>
 
@@ -364,11 +256,7 @@ export default function BecomeSellerForm() {
   );
 }
 
-function SellerStepper({
-  step,
-}: {
-  step: 1 | 2;
-}) {
+function SellerStepper({ step }: { step: 1 | 2 }) {
   return (
     <div
       className="
@@ -416,11 +304,7 @@ function SellerStepper({
           w-20
           sm:w-28
 
-          ${
-            step === 2
-              ? "bg-[#159447]"
-              : "bg-[#d9dedb]"
-          }
+          ${step === 2 ? "bg-[#159447]" : "bg-[#d9dedb]"}
         `}
       />
 
@@ -451,11 +335,7 @@ function SellerStepper({
             text-xs
             font-semibold
 
-            ${
-              step === 2
-                ? "text-[#159447]"
-                : "text-[#536157]"
-            }
+            ${step === 2 ? "text-[#159447]" : "text-[#536157]"}
           `}
         >
           Location
@@ -510,25 +390,15 @@ function SellerBenefits() {
           space-y-4
         "
       >
-        <Benefit>
-          🌱 Reach more buyers
-        </Benefit>
+        <Benefit>🌱 Reach more buyers</Benefit>
 
-        <Benefit>
-          ₹ Get better price
-        </Benefit>
+        <Benefit>₹ Get better price</Benefit>
 
-        <Benefit>
-          🤝 Connect directly
-        </Benefit>
+        <Benefit>🤝 Connect directly</Benefit>
 
-        <Benefit>
-          📈 Grow your business
-        </Benefit>
+        <Benefit>📈 Grow your business</Benefit>
 
-        <Benefit>
-          ❤️ Support local communities
-        </Benefit>
+        <Benefit>❤️ Support local communities</Benefit>
       </div>
 
       <div
@@ -543,18 +413,13 @@ function SellerBenefits() {
           text-[#107a3a]
         "
       >
-        🌿 Together for a stronger
-        farming community
+        🌿 Together for a stronger farming community
       </div>
     </aside>
   );
 }
 
-function Benefit({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+function Benefit({ children }: { children: React.ReactNode }) {
   return (
     <div
       className="

@@ -11,6 +11,8 @@ import Input from "@/components/ui/Input";
 import { authService } from "@/services/auth.service";
 
 import { useAuth } from "@/providers/AuthProvider";
+import { setClientLanguage } from "@/utils/language.utils";
+import { useTranslations } from "next-intl";
 
 interface VerifyOtpFormProps {
   mode: "login" | "register";
@@ -27,6 +29,8 @@ export default function VerifyOtpForm({ mode }: VerifyOtpFormProps) {
 
   const [otp, setOtp] = useState("");
   const [error, setError] = useState("");
+
+  const t = useTranslations("Login");
 
   const verifyMutation = useMutation({
     mutationFn: async () => {
@@ -53,11 +57,13 @@ export default function VerifyOtpForm({ mode }: VerifyOtpFormProps) {
     },
 
     onSuccess: async (result) => {
-      console.log("login result", result);
       if (result.type === "LOGIN") {
         accessTokenSetter(result.response.data.accessToken);
+        if (result.response.data.user.preferredLanguage) {
+          setClientLanguage(result.response.data.user.preferredLanguage);
+        }
         const currentUser = await getUserProfile();
-        console.log("cons 1");
+        router.refresh();
         if (returnTo === "/become-seller") {
           if (currentUser?.sellerProfile) {
             router.replace("/seller/dashboard");
@@ -67,15 +73,10 @@ export default function VerifyOtpForm({ mode }: VerifyOtpFormProps) {
 
           return;
         }
-        console.log("seller profile 1", currentUser?.sellerProfile);
-
         if (currentUser?.sellerProfile) {
-          console.log("seller profile 2", currentUser.sellerProfile);
           router.replace("/seller/dashboard");
           return;
         }
-        console.log("normal router");
-
         router.replace(returnTo);
         return;
       }
@@ -90,7 +91,7 @@ export default function VerifyOtpForm({ mode }: VerifyOtpFormProps) {
 
     onError: (error) => {
       if (axios.isAxiosError(error)) {
-        setError(error.response?.data?.message ?? "OTP सही नहीं है।");
+        setError(error.response?.data?.message ?? t("invalidOtp"));
 
         return;
       }
@@ -103,7 +104,7 @@ export default function VerifyOtpForm({ mode }: VerifyOtpFormProps) {
     event.preventDefault();
 
     if (!/^\d{6}$/.test(otp)) {
-      setError("कृपया 6 अंकों का OTP दर्ज करें।");
+      setError(t("enterSixDigitOtp"));
 
       return;
     }
@@ -122,7 +123,7 @@ export default function VerifyOtpForm({ mode }: VerifyOtpFormProps) {
       "
     >
       <div className="mb-5 rounded-xl bg-primary-light p-4">
-        <p className="text-xs text-text-secondary">OTP भेजा गया</p>
+        <p className="text-xs text-text-secondary">{t("otpSent")}</p>
 
         <p className="mt-1 font-bold text-text-primary">+91 {mobileNumber}</p>
       </div>
@@ -133,7 +134,7 @@ export default function VerifyOtpForm({ mode }: VerifyOtpFormProps) {
         type="text"
         inputMode="numeric"
         autoComplete="one-time-code"
-        placeholder="6 अंकों का OTP"
+        placeholder={t("sixDigitOtp")}
         maxLength={6}
         value={otp}
         error={error}
@@ -151,9 +152,7 @@ export default function VerifyOtpForm({ mode }: VerifyOtpFormProps) {
         className="mt-6"
         disabled={verifyMutation.isPending}
       >
-        {verifyMutation.isPending
-          ? "जाँच रहे हैं..."
-          : "सत्यापित करें · Verify"}
+        {verifyMutation.isPending ? t("verifying") : t("verify")}
       </Button>
 
       <button
@@ -163,7 +162,7 @@ export default function VerifyOtpForm({ mode }: VerifyOtpFormProps) {
           text-sm font-semibold text-primary
         "
       >
-        OTP दोबारा भेजें · Resend OTP
+        {t("resendOtp")}
       </button>
     </form>
   );

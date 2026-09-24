@@ -1,0 +1,517 @@
+{
+  "Navbar": {
+    "findSellers": "विक्रेता खोजें",
+    "becomeSeller": "विक्रेता बनें",
+    "sellerDashboard": "विक्रेता डैशबोर्ड",
+    "savedSellers": "सहेजे गए विक्रेता",
+    "myProfile": "मेरी प्रोफ़ाइल",
+    "logout": "लॉग आउट",
+    "login": "लॉगिन",
+    "register": "रजिस्टर करें"
+  },
+
+  "Home": {
+    "hero": {
+      "badge": "ताज़ा स्थानीय बाज़ार",
+      "title": "स्थानीय विक्रेताओं से ताज़ी सब्ज़ियाँ",
+      "description": "अपने आस-पास के किसानों और सब्ज़ी विक्रेताओं को खोजें, आज की उपलब्धता और कीमतें देखें, और उनसे सीधे संपर्क करें।",
+      "findSellers": "विक्रेता खोजें",
+      "becomeSeller": "विक्रेता बनें",
+      "verifiedMessage": "अपने आस-पास सत्यापित स्थानीय विक्रेता खोजें।",
+      "benefits": {
+        "local": {
+          "title": "स्थानीय विक्रेता",
+          "description": "आपके आस-पास"
+        },
+        "availability": {
+          "title": "आज की उपलब्धता",
+          "description": "जानें आज क्या उपलब्ध है"
+        },
+        "prices": {
+          "title": "स्पष्ट कीमतें",
+          "description": "संपर्क से पहले कीमतें देखें"
+        },
+        "contact": {
+          "title": "सीधा संपर्क",
+          "description": "विक्रेता से सीधे बात करें"
+        }
+      },
+      "imageMessage": {
+        "line1": "असली किसान।",
+        "line2": "ताज़ी उपज।",
+        "line3": "सीधा जुड़ाव।"
+      }
+    },
+
+    "audience": {
+      "buyer": {
+        "title": "खरीदारों के लिए",
+        "subtitle": "अपने आस-पास ताज़ी सब्ज़ियाँ खोजें",
+        "button": "विक्रेता खोजें",
+        "points": {
+          "nearby": "आस-पास के विक्रेता खोजें",
+          "availability": "आज की उपलब्धता देखें",
+          "compare": "विक्रेताओं की कीमतें देखें",
+          "contact": "विक्रेताओं से सीधे संपर्क करें"
+        }
+      },
+      "seller": {
+        "title": "किसानों और विक्रेताओं के लिए",
+        "subtitle": "अधिक स्थानीय खरीदारों तक पहुँचें",
+        "button": "विक्रेता बनें",
+        "points": {
+          "availability": "आज की उपलब्धता सूचीबद्ध करें",
+          "prices": "मात्रा और कीमतें दिखाएँ",
+          "discovered": "आस-पास के खरीदारों तक पहुँचें",
+          "reputation": "अपनी विश्वसनीयता बनाएँ"
+        }
+      }
+    },
+
+    "howItWorks": {
+      "title": "GreenBridge कैसे काम करता है",
+      "subtitle": "खरीदारों और विक्रेताओं को जोड़ने के आसान चरण",
+      "buyerTab": "खरीदारों के लिए",
+      "sellerTab": "विक्रेताओं के लिए",
+
+      "buyer": {
+        "discover": {
+          "title": "विक्रेता खोजें",
+          "description": "अपने क्षेत्र में सब्ज़ी विक्रेताओं को खोजें।"
+        },
+        "check": {
+          "title": "उपलब्धता देखें",
+          "description": "आज उपलब्ध सब्ज़ियाँ, मात्रा और कीमतें देखें।"
+        },
+        "login": {
+          "title": "लॉगिन / रजिस्टर करें",
+          "description": "विक्रेता की संपर्क जानकारी देखने के लिए अपना मोबाइल नंबर सत्यापित करें।"
+        },
+        "contact": {
+          "title": "विक्रेता से संपर्क करें",
+          "description": "विक्रेता का संपर्क नंबर देखें और सीधे कॉल करें।"
+        },
+        "deal": {
+          "title": "खरीद की जानकारी तय करें",
+          "description": "विक्रेता से कीमत, मात्रा, पिकअप या डिलीवरी के बारे में सीधे बात करें।"
+        }
+      },
+
+      "seller": {
+        "account": {
+          "title": "खाता बनाएँ",
+          "description": "अपने मोबाइल नंबर से रजिस्टर करें।"
+        },
+        "verify": {
+          "title": "सत्यापन पूरा करें",
+          "description": "विक्रेता सत्यापन प्रक्रिया पूरी करें।"
+        },
+        "inventory": {
+          "title": "आज की उपलब्धता जोड़ें",
+          "description": "आज की सब्ज़ियाँ, मात्रा और कीमतें सूचीबद्ध करें।"
+        },
+        "discovered": {
+          "title": "खरीदारों तक पहुँचें",
+          "description": "आस-पास के खरीदार आपकी दुकान खोज सकते हैं।"
+        },
+        "reputation": {
+          "title": "विश्वसनीयता बनाएँ",
+          "description": "खरीदारों की रेटिंग और अपनी विक्रेता प्रोफ़ाइल से भरोसा बनाएँ।"
+        }
+      }
+    },
+
+    "why": {
+      "title": "GreenBridge क्यों?",
+      "subtitle": "स्थानीय खरीदारों और विक्रेताओं को जोड़ने का आसान तरीका।",
+      "local": {
+        "title": "स्थानीय खोज",
+        "description": "अपने क्षेत्र में सब्ज़ी विक्रेताओं को खोजें।"
+      },
+      "availability": {
+        "title": "आज की उपलब्धता",
+        "description": "संपर्क करने से पहले जानें कि आज क्या उपलब्ध है।"
+      },
+      "prices": {
+        "title": "स्पष्ट कीमतें",
+        "description": "विक्रेता से संपर्क करने से पहले कीमतें देखें।"
+      },
+      "verified": {
+        "title": "सत्यापित विक्रेता",
+        "description": "विक्रेता की प्रोफ़ाइल सार्वजनिक होने से पहले सत्यापित की जाती है।"
+      },
+      "ratings": {
+        "title": "खरीदारों की रेटिंग",
+        "description": "अन्य खरीदारों के अनुभवों से विक्रेता के बारे में जानें।"
+      },
+      "contact": {
+        "title": "सीधा संपर्क",
+        "description": "जटिल ऑर्डर प्रक्रिया के बिना विक्रेता से सीधे बात करें।"
+      }
+    },
+
+    "cta": {
+      "title": "हरियाली और बेहतर कल की ओर, साथ मिलकर",
+      "description": "स्थानीय किसानों का सहयोग और समुदायों को ताज़ी उपज से जोड़ना।",
+      "findSellers": "विक्रेता खोजें",
+      "becomeSeller": "विक्रेता बनें"
+    }
+  },
+
+  "Login": {
+    "title": "मोबाइल नंबर से लॉग इन करें",
+    "subtitle": "अपने मोबाइल नंबर से लॉग इन करें",
+    "sendOtpError": "OTP भेजने में समस्या हुई।",
+    "somethingWentWrong": "कुछ समस्या हुई।",
+    "invalidMobileNumber": "कृपया सही 10 अंकों का मोबाइल नंबर दर्ज करें।",
+    "mobileNumber": "मोबाइल नंबर",
+    "mobilePlaceholder": "अपना मोबाइल नंबर दर्ज करें",
+    "login": "लॉगिन",
+    "otpHint": "हम इस नंबर पर OTP भेजेंगे।",
+    "sendOtp": "OTP भेजें",
+    "sendingOtp": "OTP भेजा जा रहा है...",
+    "noAccount": "क्या आपका खाता नहीं है?",
+    "register": "रजिस्टर करें",
+    "verifyLoginOtp": "लॉगिन OTP सत्यापित करें",
+    "invalidOtp": "OTP सही नहीं है।",
+    "enterSixDigitOtp": "कृपया 6 अंकों का OTP दर्ज करें।",
+    "otpSent": "OTP भेज दिया गया है",
+    "sixDigitOtp": "6 अंकों का OTP",
+    "verifying": "जाँच की जा रही है...",
+    "verify": "सत्यापित करें",
+    "resendOtp": "OTP दोबारा भेजें"
+  },
+
+  "Register": {
+    "title": "अपना GreenBridge खाता बनाएँ",
+    "mobileNumber": "मोबाइल नंबर",
+    "mobilePlaceholder": "अपना मोबाइल नंबर दर्ज करें",
+    "otpHint": "हम आपके मोबाइल नंबर को सत्यापित करने के लिए OTP भेजेंगे।",
+    "sendOtp": "OTP भेजें",
+    "sendingOtp": "OTP भेजा जा रहा है...",
+    "alreadyHaveAccount": "पहले से खाता है?",
+    "login": "लॉगिन करें",
+    "invalidMobileNumber": "कृपया सही 10 अंकों का मोबाइल नंबर दर्ज करें।",
+    "sendOtpError": "OTP भेजने में समस्या हुई।",
+    "somethingWentWrong": "कुछ समस्या हुई।",
+
+    "createAccountError": "खाता बनाने में समस्या हुई।",
+    "fullNameRequired": "कृपया अपना पूरा नाम दर्ज करें।",
+    "registrationSessionExpired": "रजिस्ट्रेशन की समय-सीमा समाप्त हो गई है। कृपया अपना मोबाइल नंबर दोबारा सत्यापित करें।",
+    "fullName": "पूरा नाम",
+    "fullNamePlaceholder": "अपना पूरा नाम दर्ज करें",
+    "continue": "आगे बढ़ें",
+    "creatingAccount": "आपका खाता बनाया जा रहा है...",
+    "preferredLanguage": "पसंदीदा भाषा"
+  },
+
+  "SellerDashboard": {
+    "title": "विक्रेता डैशबोर्ड",
+    "greeting": "सुप्रभात, {name} 👋",
+    "subtitle": "अपनी दुकान और आज की उपलब्धता अपडेट करें।",
+    "verified": "सत्यापित",
+
+    "inventory": {
+      "title": "आज की उपलब्धता",
+      "inventoryAvailableAfterVerification": "विक्रेता आवेदन सत्यापित होने के बाद आप उपलब्धता जोड़ सकेंगे।",
+      "inventoryUnavailableRejected": "आपका विक्रेता आवेदन स्वीकृत नहीं हुआ है, इसलिए उपलब्धता प्रबंधित नहीं की जा सकती।",
+      "empty": "आपने आज की उपलब्धता अभी तक नहीं जोड़ी है।",
+      "create": "उपलब्धता जोड़ें",
+      "verificationPending": "सत्यापन बाकी है",
+      "unavailable": "उपलब्ध नहीं",
+      "manageInventory": "उपलब्धता व्यवस्थित करें"
+    },
+
+    "shop": {
+      "title": "मेरी दुकान",
+      "empty": "खरीदारों को अपनी दुकान दिखाने के लिए आज की उपलब्धता जोड़ें।",
+      "shopAvailableAfterVerification": "विक्रेता सत्यापन के बाद आपकी दुकान उपलब्ध होगी।",
+      "viewShopAsBuyer": "अपनी दुकान वैसे ही देखें, जैसे खरीदार इसे देखते हैं।",
+      "setupInventory": "उपलब्धता जोड़ें",
+      "viewShop": "दुकान देखें"
+    },
+
+    "profile": {
+      "title": "विक्रेता प्रोफ़ाइल",
+      "description": "अपनी व्यक्तिगत और व्यवसाय संबंधी जानकारी अपडेट करें।",
+      "edit": "प्रोफ़ाइल संपादित करें"
+    },
+
+    "inventoryReminder": {
+      "title": "अपनी उपलब्धता अपडेट रखें",
+      "description": "अपनी उपलब्धता नियमित रूप से अपडेट करें, ताकि खरीदार सही सब्ज़ियाँ, मात्रा और कीमतें देख सकें।"
+    }
+  },
+
+  "SellerInventory": {
+    "backToDashboard": "विक्रेता डैशबोर्ड",
+    "eyebrow": "विक्रेता उपलब्धता",
+    "title": "आज की उपलब्धता",
+    "subtitle": "आज की सब्ज़ियाँ, मात्रा और कीमतें अपडेट रखें।",
+    "loadingInventory": "आज की उपलब्धता लोड हो रही है...",
+    "unableToLoadInventory": "उपलब्धता लोड नहीं हो सकी",
+    "createTodayInventory": "आज की उपलब्धता जोड़ें",
+    "createTodayInventoryDescription": "आज खरीदारों के लिए उपलब्ध सब्ज़ियाँ जोड़ें।",
+    "addAnotherVegetable": "एक और सब्ज़ी जोड़ें",
+    "editTodayInventory": "आज की उपलब्धता संपादित करें",
+    "editTodayInventoryDescription": "प्रकाशित करने से पहले आज की सब्ज़ियों की जानकारी अपडेट करें।",
+    "vegetable": "सब्ज़ी",
+    "unit": "इकाई",
+    "availableQuantity": "उपलब्ध मात्रा",
+    "marketPrice": "बाज़ार मूल्य",
+    "sellerPrice": "आपकी कीमत",
+    "addVegetable": "सब्ज़ी जोड़ें",
+
+    "editInventory": "उपलब्धता व्यवस्थित करें",
+    "publishInventory": "उपलब्धता प्रकाशित करें",
+    "publishing": "प्रकाशित किया जा रहा है...",
+    "editBeforePublishing": "प्रकाशित करने से पहले उपलब्धता की जानकारी जाँचें और आवश्यक बदलाव करें।",
+    "vegetablesListedToday": "आज {count} सब्ज़ियाँ सूचीबद्ध हैं",
+    "vegetableListedToday": "आज {count} सब्ज़ी सूचीबद्ध हैं",
+
+    "price": "कीमत",
+    "available": "उपलब्ध",
+    "market": "बाज़ार",
+    "inventory": "उपलब्धता",
+    "vegetables": "सब्ज़ियाँ",
+    "saveChanges": "बदलाव सेव करें",
+    "updateLiveInventory": "लाइव उपलब्धता अपडेट करें",
+
+    "empty": {
+      "title": "आज की उपलब्धता अभी नहीं जोड़ी गई है",
+      "description": "अपनी आज की उपलब्धता जोड़ें, ताकि खरीदार आपकी सब्ज़ियाँ देख सकें।",
+      "yesterdayInventoryNotFound": "कल की उपलब्धता मौजूद नहीं है। इसके बजाय आज की नई उपलब्धता जोड़ें।",
+      "createFresh": "नई उपलब्धता जोड़ें",
+      "copyYesterday": "कल की कॉपी करें",
+      "copying": "कॉपी किया जा रहा है..."
+    }
+  },
+
+  "FindSellers": {
+    "title": "सब्ज़ी बेचने वालों को खोजें",
+    "subtitle": "अपने आस-पास सब्ज़ी बेचने वालों को खोजें",
+
+    "location": {
+      "title": "अपने आस-पास विक्रेता खोजें",
+      "description": "चुनें कि आप कैसे खोजना चाहते हैं",
+
+      "currentLocation": {
+        "title": "वर्तमान स्थान का उपयोग करें",
+        "description": "अपने आस-पास विक्रेता खोजें",
+        "gettingLocation": "स्थान की जानकारी प्राप्त की जा रही है..."
+      },
+
+      "manual": {
+        "title": "स्थान चुनकर खोजें",
+        "description": "राज्य, जिला या गाँव चुनें"
+      },
+
+      "selectStateHint": "खोज शुरू करने के लिए कम से कम राज्य चुनें।",
+
+      "state": "राज्य",
+      "district": "जिला",
+      "village": "गाँव / क्षेत्र",
+
+      "searchState": "राज्य खोजें...",
+      "selectDistrict": "जिला चुनें...",
+      "selectVillage": "गाँव चुनें...",
+
+      "selectStateFirst": "पहले राज्य चुनें",
+      "searchDistrict": "जिला खोजें",
+      "searchVillageOrArea": "गाँव या क्षेत्र खोजें...",
+      "selectDistrictFirst": "पहले जिला चुनें",
+
+      "searchSellers": "विक्रेता खोजें",
+      "clearLocation": "स्थान हटाएँ"
+    },
+
+    "searchingIn": "यहाँ खोज रहे हैं:",
+
+    "vegetables": {
+      "title": "आपको क्या चाहिए?",
+      "description": "विक्रेता खोजने के लिए एक या अधिक सब्ज़ियाँ चुनें।",
+      "placeholder": "सब्ज़ियाँ खोजें...",
+      "searchSellers": "विक्रेता खोजें"
+    },
+
+    "findingNearbySellers": "आस-पास के विक्रेता खोजे जा रहे हैं...",
+    "unableToLoadSellers": "विक्रेताओं की जानकारी लोड नहीं हो सकी।",
+
+    "sellers": {
+      "availableToday": "आज उपलब्ध है",
+      "call": "कॉल करें",
+      "viewShop": "दुकान देखें",
+      "available": "उपलब्ध है",
+      "verified": "सत्यापित",
+      "distanceAway": "{distance} किमी दूर",
+      "noRatingsYet": "रेटिंग नहीं है",
+      "more": "{count} और",
+      "gettingCallDetails": "कॉल की जानकारी प्राप्त की जा रही है..."
+    },
+
+    "results": {
+      "noSellersNearby": "आपके आस-पास कोई विक्रेता नहीं मिला।",
+      "noSellers": "कोई विक्रेता नहीं मिला।",
+      "tryDifferentLocation": "कोई दूसरा स्थान चुनें या सब्ज़ियों के फ़िल्टर बदलकर देखें।",
+      "sellerCount": "{count} विक्रेता मिले",
+      "trustedSellers": "विश्वसनीय विक्रेता"
+    }
+  },
+
+  "CallSeller": {
+    "callSeller": "विक्रेता को कॉल करें",
+    "contactSellerDirectly": "विक्रेता से सीधे संपर्क करें",
+    "contactNumber": "संपर्क नंबर",
+    "contactNote": "कीमत, मात्रा और सामान लेने या डिलीवरी के बारे में विक्रेता से सीधे बात करें।",
+    "callNow": "अभी कॉल करें"
+  },
+
+  "GuestCall": {
+    "loginToCallSeller": "विक्रेता को कॉल करने के लिए लॉग इन करें",
+    "signInToContact": "विक्रेता से संपर्क करने के लिए अपने मोबाइल नंबर से लॉग इन करें।",
+    "sellerContactProtected": "विक्रेता की संपर्क जानकारी सुरक्षित है",
+    "contactAvailableAfterLogin": "संपर्क जानकारी केवल लॉग इन करने के बाद उपलब्ध होगी।",
+    "loginToCall": "कॉल करने के लिए लॉग इन करें",
+    "notNow": "अभी नहीं"
+  },
+
+  "SellerApplication": {
+    "submitted": "आवेदन जमा",
+    "underReview": "समीक्षा जारी है",
+    "reviewed": "समीक्षा पूरी",
+    "rejected": "अस्वीकृत",
+    "verified": "सत्यापित",
+    "viewReason": "कारण देखें",
+    "reapply": "दोबारा आवेदन करें",
+    "rejectionReason": "अस्वीकृति का कारण"
+  },
+
+  "SellerShop": {
+    "verified": "सत्यापित",
+    "availableToday": "आज उपलब्ध है",
+    "vegetableAvailableToday": "{count} सब्ज़ी उपलब्ध है",
+    "vegetablesAvailableToday": "{count} सब्ज़ियाँ उपलब्ध है",
+    "searchInShop": "इस दुकान में खोजें...",
+    "noRatingsYet": "रेटिंग नहीं है",
+    "beFirstToShareExperience": "अपने अनुभव को साझा करने वाले पहले खरीदार बनें।",
+    "unableToLoadShop": "दुकान की जानकारी लोड नहीं हो सकी।",
+    "unableToLoadRatingSummary": "विक्रेता की रेटिंग की जानकारी लोड नहीं हो सकी।",
+    "ratingsAndFeedback": "रेटिंग और प्रतिक्रिया",
+    "ratingsDescription": "देखें कि खरीदार इस विक्रेता के बारे में क्या सोचते हैं।",
+    "wantToLeaveRating": "क्या आप रेटिंग देना चाहते हैं?",
+    "contactBeforeRating": "पहले इस विक्रेता से संपर्क करें। बातचीत के बाद आप उन्हें रेटिंग दे सकेंगे।",
+    "ratingAvailableSoon": "रेटिंग जल्द उपलब्ध होगी",
+    "ratingWaitingPeriod": "संपर्क की प्रतीक्षा अवधि पूरी होने के बाद आप इस विक्रेता को रेटिंग दे सकेंगे।",
+    "availableAfter": "इसके बाद उपलब्ध",
+    "yourRating": "आपकी रेटिंग",
+    "rateThisSeller": "इस विक्रेता को रेटिंग दें",
+    "edit": "संपादित करें"
+  },
+
+  "SellerRating": {
+    "create": "बनाएँ",
+    "rateThisSeller": "इस विक्रेता को रेटिंग दें",
+    "editYourRating": "अपनी रेटिंग संपादित करें",
+    "shareExperience": "इस विक्रेता के साथ अपना अनुभव साझा करें।",
+    "howWasExperience": "आपका अनुभव कैसा रहा?",
+    "whatStoodOut": "आपको क्या खास लगा?",
+    "optional": "वैकल्पिक",
+    "selectUpToFive": "अधिकतम 5 विकल्प चुनें।",
+    "updateRating": "रेटिंग अपडेट करें",
+    "submitRating": "रेटिंग भेजें"
+  },
+
+  "SavedSellers": {
+    "savedSellers": "सेव किए गए विक्रेता",
+    "savedSellersDescription": "जिन विक्रेताओं को आपने सेव किया है, उन्हें यहाँ आसानी से देखें।",
+    "loadingSavedSellers": "सेव किए गए विक्रेता लोड हो रहे हैं...",
+    "noSavedSellers": "अभी तक कोई विक्रेता सेव नहीं किया गया है",
+    "noSavedSellersDescription": "अपनी पसंद के विक्रेताओं को सेव करें और उन्हें यहाँ आसानी से देखें।",
+    "findSellers": "विक्रेता खोजें",
+    "unableToLoadSavedSellers": "सेव किए गए विक्रेताओं की जानकारी लोड नहीं हो सकी।",
+    "savedSellersLoadError": "आपके सेव किए गए विक्रेताओं को लोड करते समय कुछ समस्या हुई।",
+    "noRatingsYet": "रेटिंग नहीं है",
+    "availableToday": "आज उपलब्ध है",
+    "more": "{count} और",
+    "notAvailableToday": "आज उपलब्ध नहीं",
+    "notAvailableTodayDescription": "इस विक्रेता के पास आज कोई उत्पाद उपलब्ध नहीं है। बाद में उनकी दुकान दोबारा देखें।",
+    "sellerCurrentlyUnavailable": "विक्रेता अभी उपलब्ध नहीं है",
+    "sellerCurrentlyUnavailableDescription": "इस विक्रेता की दुकान अभी उपलब्ध नहीं है। आप इन्हें सेव रख सकते हैं या अपनी सूची से हटा सकते हैं।"
+  },
+
+  "Profile": {
+    "title": "मेरी प्रोफ़ाइल",
+    "description": "अपने खाते की जानकारी प्रबंधित करें।",
+
+    "personalInformation": {
+      "title": "व्यक्तिगत जानकारी",
+      "description": "आपके खाते की सामान्य जानकारी।",
+      "fullName": "पूरा नाम",
+      "mobileNumber": "मोबाइल नंबर",
+      "verified": "सत्यापित",
+      "edit": "संपादित करें",
+      "verifiedMobileCannotBeChanged": "आपका सत्यापित मोबाइल नंबर बदला नहीं जा सकता।"
+    },
+
+    "sellerInformation": {
+      "title": "विक्रेता जानकारी",
+      "description": "आपके विक्रेता खाते की जानकारी।",
+      "verificationStatus": "सत्यापन स्थिति",
+      "businessType": "व्यवसाय का प्रकार"
+    },
+
+    "sellerLocation": {
+      "title": "विक्रेता का स्थान",
+      "description": "यह स्थान खरीदारों को दिखाई देगा।",
+      "village": "गाँव",
+      "district": "जिला",
+      "state": "राज्य",
+      "pincode": "पिन कोड",
+      "editLocation": "स्थान संपादित करें",
+      "searchOrSelectState": "राज्य खोजें या चुनें",
+      "searchDistrict": "जिला खोजें",
+      "selectDistrictFirst": "पहले जिला चुनें",
+      "searchVillage": "गाँव खोजें",
+
+      "sellerLocationUpdated": "विक्रेता का स्थान सफलतापूर्वक अपडेट हो गया।",
+      "unableToUpdateSellerLocation": "विक्रेता का स्थान अपडेट नहीं हो सका।",
+      "locationNotSupported": "आपका ब्राउज़र स्थान की जानकारी प्राप्त करने की सुविधा का समर्थन नहीं करता है।",
+      "currentLocationCaptured": "वर्तमान स्थान प्राप्त कर लिया गया है।",
+      "locationPermissionDenied": "स्थान की अनुमति नहीं मिली। कृपया लोकेशन एक्सेस की अनुमति दें और दोबारा प्रयास करें।",
+      "currentLocationUnavailable": "आपका वर्तमान स्थान उपलब्ध नहीं है।",
+      "locationRequestTimedOut": "स्थान प्राप्त करने में अधिक समय लग रहा है। कृपया दोबारा प्रयास करें।",
+      "unableToGetCurrentLocation": "आपका वर्तमान स्थान प्राप्त नहीं हो सका।",
+      "selectStateFirst": "कृपया पहले अपना राज्य चुनें।",
+      "selectDistrict": "कृपया अपना जिला चुनें।",
+      "selectVillage": "कृपया अपना गाँव चुनें।",
+      "invalidPincode": "कृपया 6 अंकों का सही पिन कोड दर्ज करें।",
+      "captureCurrentLocationRequired": "कृपया अपना वर्तमान स्थान प्राप्त करें।",
+      "currentLocation": "वर्तमान स्थान",
+      "pincodePlaceholder": "6 अंकों का पिन कोड दर्ज करें",
+      "preciseLocation": "सटीक स्थान",
+      "preciseLocationDescription": "इसका उपयोग दूरी की गणना करने और आस-पास के खरीदारों को आपकी दुकान खोजने में मदद करने के लिए किया जाता है।",
+      "locating": "स्थान प्राप्त किया जा रहा है...",
+      "locationCaptured": "स्थान प्राप्त हो गया",
+      "useCurrentLocation": "वर्तमान स्थान का उपयोग करें",
+      "locationCapturedSuccessfully": "वर्तमान स्थान सफलतापूर्वक प्राप्त हो गया।",
+      "saveLocation": "स्थान सेव करें"
+    },
+
+    "verificationStatus": {
+      "verified": "सत्यापित",
+      "pending": "सत्यापन लंबित",
+      "rejected": "अस्वीकृत"
+    }
+  },
+
+  "Common": {
+    "save": "सहेजें",
+    "cancel": "रद्द करें",
+    "retry": "फिर प्रयास करें",
+    "loading": "लोड हो रहा है...",
+    "saving": "सेव हो रहा है...",
+    "applying": "आवेदन भेजा जा रहा है...",
+    "pleaseTryAgain": "कृपया दोबारा प्रयास करें।",
+    "creating": "जोड़ा जा रहा है..."
+  }
+}

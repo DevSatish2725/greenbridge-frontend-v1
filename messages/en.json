@@ -1,0 +1,514 @@
+{
+  "Navbar": {
+    "findSellers": "Find Sellers",
+    "becomeSeller": "Become Seller",
+    "sellerDashboard": "Seller Dashboard",
+    "savedSellers": "Saved Sellers",
+    "myProfile": "My Profile",
+    "logout": "Logout",
+    "login": "Login",
+    "register": "Register"
+  },
+  "Home": {
+    "hero": {
+      "badge": "Fresh Marketplace",
+      "title": "Fresh Vegetables from Local Sellers",
+      "description": "Discover nearby farmers and vegetable sellers, check today's availability and prices, and contact them directly.",
+      "findSellers": "Find Sellers",
+      "becomeSeller": "Become a Seller",
+      "verifiedMessage": "Discover verified local sellers near you.",
+      "benefits": {
+        "local": {
+          "title": "Local Sellers",
+          "description": "Near your area"
+        },
+        "availability": {
+          "title": "Today's Availability",
+          "description": "Know what's in stock"
+        },
+        "prices": {
+          "title": "Clear Prices",
+          "description": "Compare before you call"
+        },
+        "contact": {
+          "title": "Direct Contact",
+          "description": "Talk to sellers directly"
+        }
+      },
+      "imageMessage": {
+        "line1": "Real Farmers.",
+        "line2": "Real Produce.",
+        "line3": "Real Connections."
+      }
+    },
+
+    "audience": {
+      "buyer": {
+        "title": "For Buyers",
+        "subtitle": "Find fresh vegetables near you",
+        "button": "Find Sellers",
+        "points": {
+          "nearby": "Find nearby sellers",
+          "availability": "Check today's availability",
+          "compare": "Compare seller prices",
+          "contact": "Contact sellers directly"
+        }
+      },
+      "seller": {
+        "title": "For Farmers & Sellers",
+        "subtitle": "Reach more local buyers",
+        "button": "Become a Seller",
+        "points": {
+          "availability": "List today's availability",
+          "prices": "Show your quantities and prices",
+          "discovered": "Get discovered by nearby buyers",
+          "reputation": "Build your reputation"
+        }
+      }
+    },
+
+    "howItWorks": {
+      "title": "How GreenBridge Works",
+      "subtitle": "Simple steps to connect buyers and sellers",
+      "buyerTab": "For Buyers",
+      "sellerTab": "For Sellers",
+
+      "buyer": {
+        "discover": {
+          "title": "Discover Sellers",
+          "description": "Find vegetable sellers in your area."
+        },
+        "check": {
+          "title": "Check Availability",
+          "description": "See today's vegetables, quantities and prices."
+        },
+        "login": {
+          "title": "Login / Register",
+          "description": "Verify your mobile number to access seller contact details."
+        },
+        "contact": {
+          "title": "Contact Seller",
+          "description": "View the seller's contact number and call directly."
+        },
+        "deal": {
+          "title": "Discuss the Details",
+          "description": "Discuss price, quantity, pickup or delivery directly with the seller."
+        }
+      },
+
+      "seller": {
+        "account": {
+          "title": "Create Account",
+          "description": "Register using your mobile number."
+        },
+        "verify": {
+          "title": "Get Verified",
+          "description": "Complete the seller verification process."
+        },
+        "inventory": {
+          "title": "Add Today's Inventory",
+          "description": "List today's vegetables, quantities and prices."
+        },
+        "discovered": {
+          "title": "Get Discovered",
+          "description": "Nearby buyers can discover your shop."
+        },
+        "reputation": {
+          "title": "Build Reputation",
+          "description": "Build trust through buyer ratings and your seller profile."
+        }
+      }
+    },
+
+    "why": {
+      "title": "Why GreenBridge?",
+      "subtitle": "A simpler way for local buyers and sellers to connect.",
+      "local": {
+        "title": "Local Discovery",
+        "description": "Find vegetable sellers in your area."
+      },
+      "availability": {
+        "title": "Today's Availability",
+        "description": "Know what's available today before you call."
+      },
+      "prices": {
+        "title": "Clear Prices",
+        "description": "Compare prices before contacting sellers."
+      },
+      "verified": {
+        "title": "Verified Sellers",
+        "description": "Seller profiles are verified before appearing publicly."
+      },
+      "ratings": {
+        "title": "Buyer Ratings",
+        "description": "Learn from other buyers' experiences."
+      },
+      "contact": {
+        "title": "Direct Contact",
+        "description": "Talk directly with sellers without a complicated ordering process."
+      }
+    },
+
+    "cta": {
+      "title": "Together for a Greener, Healthier Tomorrow",
+      "description": "Supporting local farmers and connecting communities with fresh produce.",
+      "findSellers": "Find Sellers",
+      "becomeSeller": "Become a Seller"
+    }
+  },
+
+  "Login": {
+    "title": "Login with Mobile Number",
+    "subtitle": "Login with your mobile number",
+    "sendOtpError": "Something went wrong while sending the OTP.",
+    "somethingWentWrong": "Something went wrong.",
+    "invalidMobileNumber": "Please enter a valid 10-digit mobile number.",
+    "mobileNumber": "Mobile Number",
+    "mobilePlaceholder": "Enter your mobile number",
+    "login": "Login",
+    "otpHint": "We'll send an OTP to this number.",
+    "sendOtp": "Send OTP",
+    "sendingOtp": "Sending OTP...",
+    "noAccount": "Don't have an account?",
+    "register": "Register",
+    "verifyLoginOtp": "Verify Login OTP",
+    "invalidOtp": "The OTP is incorrect.",
+    "enterSixDigitOtp": "Please enter the 6-digit OTP.",
+    "otpSent": "OTP Sent",
+    "sixDigitOtp": "6-digit OTP",
+    "verifying": "Verifying...",
+    "verify": "Verify",
+    "resendOtp": "Resend OTP"
+  },
+
+  "Register": {
+    "title": "Create your GreenBridge account",
+    "mobileNumber": "Mobile Number",
+    "mobilePlaceholder": "Enter your mobile number",
+    "otpHint": "We'll send an OTP to verify your mobile number.",
+    "sendOtp": "Send OTP",
+    "sendingOtp": "Sending OTP...",
+    "alreadyHaveAccount": "Already have an account?",
+    "login": "Login",
+    "invalidMobileNumber": "Please enter a valid 10-digit mobile number.",
+    "sendOtpError": "Something went wrong while sending the OTP.",
+    "somethingWentWrong": "Something went wrong.",
+
+    "createAccountError": "Something went wrong while creating your account.",
+    "fullNameRequired": "Please enter your full name.",
+    "registrationSessionExpired": "Registration session expired. Please verify your phone again.",
+    "fullName": "Full Name",
+    "fullNamePlaceholder": "Enter your full name",
+    "continue": "Continue",
+    "creatingAccount": "Creating your account...",
+    "preferredLanguage": "Preferred Language"
+  },
+
+  "SellerDashboard": {
+    "title": "Seller Dashboard",
+    "greeting": "Good morning, {name} 👋",
+    "subtitle": "Manage your shop and today's availability.",
+    "verified": "Verified",
+
+    "inventory": {
+      "title": "Today's Availability",
+      "empty": "You haven't added today's availability yet.",
+      "inventoryAvailableAfterVerification": "Inventory will be available after your seller application is verified.",
+      "inventoryUnavailableRejected": "Inventory is unavailable because your seller application was not approved.",
+      "create": "Create Inventory",
+      "verificationPending": "Verification Pending",
+      "unavailable": "Unavailable",
+      "manageInventory": "Manage Inventory"
+    },
+
+    "shop": {
+      "title": "My Shop",
+      "empty": "Add today's availability to start showing your shop to buyers.",
+      "shopAvailableAfterVerification": "Your shop will become available after seller verification.",
+      "viewShopAsBuyer": "See your shop exactly as buyers see it.",
+      "setupInventory": "Create Inventory",
+      "viewShop": "View Shop"
+    },
+
+    "profile": {
+      "title": "Seller Profile",
+      "description": "Update your personal and business information.",
+      "edit": "Edit Profile"
+    },
+
+    "inventoryReminder": {
+      "title": "Keep your availability updated",
+      "description": "Update your availability regularly so buyers can see accurate vegetables, quantities, and prices."
+    }
+  },
+
+  "SellerInventory": {
+    "backToDashboard": "Seller Dashboard",
+    "eyebrow": "Seller Inventory",
+    "title": "Today's Availability",
+    "subtitle": "Keep today's vegetables, quantities and prices updated.",
+    "loadingInventory": "Loading today's availability...",
+    "unableToLoadInventory": "Unable to load availability",
+    "createTodayInventory": "Create Today's Availability",
+    "createTodayInventoryDescription": "Add the vegetables you have available for buyers today.",
+    "addAnotherVegetable": "Add Another Vegetable",
+    "editTodayInventory": "Edit Today's Availability",
+    "editTodayInventoryDescription": "Update today's vegetables before publishing.",
+    "vegetable": "Vegetable",
+    "unit": "Unit",
+    "availableQuantity": "Available Quantity",
+    "marketPrice": "Market Price",
+    "sellerPrice": "Seller Price",
+    "addVegetable": "Add Vegetable",
+
+    "editInventory": "Edit Inventory",
+    "publishInventory": "Publish Inventory",
+    "publishing": "Publishing...",
+    "editBeforePublishing": "Edit the inventory and correct the values before publishing.",
+    "vegetablesListedToday": "{count} vegetables listed today",
+    "vegetableListedToday": "{count} vegetable listed today",
+    "price": "Price",
+    "available": "Available",
+    "market": "Market",
+    "inventory": "Inventory",
+    "saveChanges": "Save Changes",
+    "updateLiveInventory": "Update Live Inventory",
+
+    "empty": {
+      "title": "No inventory for today",
+      "description": "Add today's availability so buyers can discover your vegetables.",
+      "yesterdayInventoryNotFound": "Yesterday's availability doesn't exist. Create a fresh availability instead.",
+      "createFresh": "Add Fresh",
+      "copyYesterday": "Copy Yesterday",
+      "copying": "Copying..."
+    }
+  },
+
+  "FindSellers": {
+    "title": "Find Vegetable Sellers",
+    "subtitle": "Find vegetable sellers near you",
+
+    "location": {
+      "title": "Find sellers near you",
+      "description": "Choose how you want to search",
+
+      "currentLocation": {
+        "title": "Use Current Location",
+        "description": "Find sellers near you",
+        "gettingLocation": "Getting location..."
+      },
+
+      "manual": {
+        "title": "Search Manually",
+        "description": "Choose state, district or village"
+      },
+
+      "selectStateHint": "Select at least a state to start searching.",
+
+      "state": "State",
+      "district": "District",
+      "village": "Village / Area",
+
+      "searchState": "Search state...",
+      "selectDistrict": "Select district...",
+      "selectVillage": "Select village...",
+
+      "selectStateFirst": "Select state first",
+      "searchDistrict": "Search district...",
+      "searchVillageOrArea": "Search village or area...",
+      "selectDistrictFirst": "Select district first",
+
+      "searchSellers": "Search Sellers",
+      "clearLocation": "Clear Location"
+    },
+
+    "searchingIn": "Searching in:",
+
+    "vegetables": {
+      "title": "What do you need?",
+      "description": "Select one or more vegetables to find sellers.",
+      "placeholder": "Search vegetables...",
+      "searchSellers": "Search Sellers"
+    },
+
+    "findingNearbySellers": "Finding nearby sellers...",
+    "unableToLoadSellers": "Unable to load sellers.",
+
+    "sellers": {
+      "availableToday": "Available Today",
+      "call": "Call",
+      "viewShop": "View Shop",
+      "available": "Available",
+      "verified": "Verified",
+      "distanceAway": "{distance} km away",
+      "noRatingsYet": "No ratings",
+      "more": "{count} more",
+      "gettingCallDetails": "Getting call details..."
+    },
+
+    "results": {
+      "noSellersNearby": "No sellers found near your location.",
+      "noSellers": "No sellers found.",
+      "tryDifferentLocation": "Try a different location or adjust your vegetable filters.",
+      "sellerCount": "{count} sellers found.",
+      "trustedSellers": "Trusted sellers"
+    }
+  },
+
+  "CallSeller": {
+    "callSeller": "Call Seller",
+    "contactSellerDirectly": "Contact seller directly",
+    "contactNumber": "Contact Number",
+    "contactNote": "Discuss price, quantity, and pickup or delivery directly with the seller.",
+    "callNow": "Call Now"
+  },
+
+  "GuestCall": {
+    "loginToCallSeller": "Login to Call Seller",
+    "signInToContact": "Sign in with your mobile number to contact the seller.",
+    "sellerContactProtected": "Seller contact is protected",
+    "contactAvailableAfterLogin": "Contact details are available only after login.",
+    "loginToCall": "Login to Call",
+    "notNow": "Not Now"
+  },
+
+  "SellerApplication": {
+    "submitted": "Submitted",
+    "underReview": "Under Review",
+    "reviewed": "Reviewed",
+    "rejected": "Rejected",
+    "verified": "Verified",
+    "viewReason": "View reason",
+    "reapply": "Re-apply",
+    "rejectionReason": "Rejection reason"
+  },
+
+  "SellerShop": {
+    "verified": "Verified",
+    "availableToday": "Available Today",
+    "vegetableAvailableToday": "{count} vegetable available today",
+    "vegetablesAvailableToday": "{count} vegetables available today",
+    "searchInShop": "Search in this shop...",
+    "unableToLoadShop": "Unable to load shop.",
+    "noRatingsYet": "No ratings",
+    "beFirstToShareExperience": "Be the first buyer to share your experience.",
+    "unableToLoadRatingSummary": "Unable to load seller rating summary.",
+    "ratingsAndFeedback": "Ratings & Feedback",
+    "ratingsDescription": "See what buyers think about this seller.",
+    "wantToLeaveRating": "Want to leave a rating?",
+    "contactBeforeRating": "Contact this seller first. You’ll be able to rate them after interacting.",
+    "ratingAvailableSoon": "Rating will be available soon",
+    "ratingWaitingPeriod": "You can rate this seller after your contact waiting period is complete.",
+    "availableAfter": "Available after",
+    "rateThisSeller": "Rate this seller",
+    "yourRating": "Your rating",
+    "edit": "Edit"
+  },
+
+  "SellerRating": {
+    "create": "Create",
+    "editYourRating": "Edit your rating",
+    "rateThisSeller": "Rate this seller",
+    "shareExperience": "Share your experience with this seller.",
+    "howWasExperience": "How was your experience?",
+    "whatStoodOut": "What stood out?",
+    "optional": "Optional",
+    "selectUpToFive": "Select up to 5 options.",
+    "updateRating": "Update Rating",
+    "submitRating": "Submit Rating"
+  },
+
+  "SavedSellers": {
+    "savedSellers": "Saved Sellers",
+    "savedSellersDescription": "Sellers you've saved for quick access.",
+    "loadingSavedSellers": "Loading saved sellers...",
+    "noSavedSellers": "No saved sellers yet",
+    "noSavedSellersDescription": "Save sellers you're interested in and they'll appear here for quick access.",
+    "findSellers": "Find Sellers",
+    "unableToLoadSavedSellers": "Unable to load saved sellers.",
+    "savedSellersLoadError": "Something went wrong while loading your saved sellers.",
+    "noRatingsYet": "No ratings",
+    "availableToday": "Available Today",
+    "more": "{count} more",
+    "notAvailableToday": "Not available today",
+    "notAvailableTodayDescription": "This seller doesn't have any produce available today. Check their shop again later.",
+    "sellerCurrentlyUnavailable": "Seller currently unavailable",
+    "sellerCurrentlyUnavailableDescription": "This seller's shop is currently unavailable. You can keep them saved or remove them from your list."
+  },
+
+  "Profile": {
+    "title": "My Profile",
+    "description": "Manage your account information.",
+
+    "personalInformation": {
+      "title": "Personal Information",
+      "description": "Your basic account details.",
+      "fullName": "Full Name",
+      "mobileNumber": "Mobile Number",
+      "verified": "Verified",
+      "edit": "Edit",
+      "verifiedMobileCannotBeChanged": "Your verified mobile number cannot be changed."
+    },
+
+    "sellerInformation": {
+      "title": "Seller Information",
+      "description": "Your seller account details.",
+      "verificationStatus": "Verification Status",
+      "businessType": "Business Type"
+    },
+
+    "sellerLocation": {
+      "title": "Seller Location",
+      "description": "Location shown to buyers.",
+      "village": "Village",
+      "district": "District",
+      "state": "State",
+      "pincode": "Pincode",
+      "editLocation": "Edit Location",
+      "searchOrSelectState": "Search or select state",
+      "searchDistrict": "Search district",
+      "selectDistrictFirst": "Select district first",
+      "searchVillage": "Search village",
+
+      "sellerLocationUpdated": "Seller location updated successfully.",
+      "unableToUpdateSellerLocation": "Unable to update seller location.",
+      "locationNotSupported": "Location access is not supported by your browser.",
+      "currentLocationCaptured": "Current location captured.",
+      "locationPermissionDenied": "Location permission was denied. Please allow location access and try again.",
+      "currentLocationUnavailable": "Your current location is unavailable.",
+      "locationRequestTimedOut": "Location request timed out. Please try again.",
+      "unableToGetCurrentLocation": "Unable to get your current location.",
+      "selectStateFirst": "Please select your state first.",
+      "selectDistrict": "Please select your district.",
+      "selectVillage": "Please select your village.",
+      "invalidPincode": "Please enter a valid 6 digit pincode.",
+      "captureCurrentLocationRequired": "Please capture your current location.",
+      "currentLocation": "Current Location",
+      "pincodePlaceholder": "Enter 6 digit pincode",
+      "preciseLocation": "Precise Location",
+      "preciseLocationDescription": "Used to calculate distance and help nearby buyers discover your shop.",
+      "locating": "Locating...",
+      "locationCaptured": "Location Captured",
+      "useCurrentLocation": "Use Current Location",
+      "locationCapturedSuccessfully": "Current location captured successfully.",
+      "saveLocation": "Save Location"
+    },
+
+    "verificationStatus": {
+      "verified": "Verified",
+      "pending": "Pending",
+      "rejected": "Rejected"
+    }
+  },
+
+  "Common": {
+    "save": "Save",
+    "cancel": "Cancel",
+    "retry": "Retry",
+    "loading": "Loading...",
+    "saving": "Saving...",
+    "applying": "Applying...",
+    "pleaseTryAgain": "Please try again.",
+    "creating": "Creating..."
+  }
+}

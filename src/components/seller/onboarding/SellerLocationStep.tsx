@@ -11,7 +11,7 @@ import { locationService } from "@/services/location.service";
 import type { SellerOnboardingForm } from "./BecameSellerForm";
 
 interface Option {
-  _id: string;
+  id: string;
   name: string;
 }
 
@@ -22,6 +22,7 @@ interface Props {
   isSubmitting: boolean;
   onBack: () => void;
   onSubmit: () => void;
+  isSellerProfile: boolean;
 }
 
 export default function SellerLocationStep({
@@ -30,6 +31,7 @@ export default function SellerLocationStep({
   isSubmitting,
   onBack,
   onSubmit,
+  isSellerProfile,
 }: Props) {
   const [stateSearch, setStateSearch] = useState(form.state?.name ?? "");
 
@@ -59,7 +61,7 @@ export default function SellerLocationStep({
     queryKey: [
       "locations",
       "districts",
-      form.state?._id,
+      form.state?.id,
       debouncedDistrictSearch,
     ],
 
@@ -69,7 +71,7 @@ export default function SellerLocationStep({
       }
 
       return locationService.searchDistricts({
-        stateId: form.state._id,
+        stateId: form.state.id,
         search: debouncedDistrictSearch,
       });
     },
@@ -81,7 +83,7 @@ export default function SellerLocationStep({
     queryKey: [
       "locations",
       "villages",
-      form.district?._id,
+      form.district?.id,
       debouncedVillageSearch,
     ],
 
@@ -91,7 +93,7 @@ export default function SellerLocationStep({
       }
 
       return locationService.searchVillages({
-        districtId: form.district._id,
+        districtId: form.district.id,
         search: debouncedVillageSearch,
       });
     },
@@ -425,7 +427,7 @@ export default function SellerLocationStep({
           className="
             flex
             h-12
-            flex-[2]
+            flex-2
             items-center
             justify-center
             rounded-xl
@@ -439,349 +441,13 @@ export default function SellerLocationStep({
             disabled:opacity-60
           "
         >
-          {isSubmitting ? "Creating seller..." : "Become a Seller"}
+          {isSubmitting
+            ? "Applying..."
+            : isSellerProfile
+              ? "Re-apply for Seller"
+              : "Apply for Seller"}
         </button>
       </div>
     </>
-    // <section
-    //   className="
-    //     rounded-2xl
-    //     border border-border
-    //     bg-white
-    //     p-4
-    //     shadow-sm
-    //     sm:p-6
-    //   "
-    // >
-    //   <div>
-    //     <div
-    //       className="
-    //         flex
-    //         items-center
-    //         gap-3
-    //       "
-    //     >
-    //       <div
-    //         className="
-    //           flex
-    //           h-11 w-11
-    //           items-center
-    //           justify-center
-    //           rounded-full
-    //           bg-primary-light
-    //           text-primary
-    //         "
-    //       >
-    //         <MapPin
-    //           className="
-    //             h-5 w-5
-    //           "
-    //         />
-    //       </div>
-
-    //       <div>
-    //         <h2
-    //           className="
-    //             text-xl
-    //             font-bold
-    //             text-text-primary
-    //           "
-    //         >
-    //           Your Location
-    //         </h2>
-
-    //         <p
-    //           className="
-    //             mt-0.5
-    //             text-sm
-    //             text-text-secondary
-    //           "
-    //         >
-    //           Tell buyers where your produce is available.
-    //         </p>
-    //       </div>
-    //     </div>
-    //   </div>
-
-    //   <div
-    //     className="
-    //       mt-6
-    //       space-y-4
-    //     "
-    //   >
-    //     <SearchableLocationField
-    //       label="State *"
-    //       placeholder="Search state"
-    //       value={form.state}
-    //       search={stateSearch}
-    //       options={filteredStates}
-    //       onSearchChange={setStateSearch}
-    //       onSelect={handleStateSelect}
-    //       isLoading={statesLoading}
-    //       localSearch
-    //     />
-
-    //     <SearchableLocationField
-    //       label="District *"
-    //       placeholder={form.state ? "Search district" : "Select state first"}
-    //       value={form.district}
-    //       search={districtSearch}
-    //       options={districts}
-    //       onSearchChange={setDistrictSearch}
-    //       onSelect={handleDistrictSelect}
-    //       disabled={!form.state}
-    //       isLoading={districtsLoading}
-    //       minimumSearchLength={1}
-    //     />
-
-    //     <SearchableLocationField
-    //       label="Village *"
-    //       placeholder={
-    //         form.district ? "Search village" : "Select district first"
-    //       }
-    //       value={form.village}
-    //       search={villageSearch}
-    //       options={villages}
-    //       onSearchChange={setVillageSearch}
-    //       onSelect={handleVillageSelect}
-    //       disabled={!form.district}
-    //       isLoading={villagesLoading}
-    //       minimumSearchLength={2}
-    //     />
-
-    //     <div>
-    //       <label
-    //         htmlFor="pincode"
-    //         className="
-    //           mb-2
-    //           block
-    //           text-sm
-    //           font-bold
-    //           text-text-primary
-    //         "
-    //       >
-    //         Pincode *
-    //       </label>
-
-    //       <input
-    //         id="pincode"
-    //         inputMode="numeric"
-    //         maxLength={6}
-    //         value={form.pincode}
-    //         onChange={(event) => {
-    //           const value = event.target.value.replace(/\D/g, "").slice(0, 6);
-
-    //           setForm((previous) => ({
-    //             ...previous,
-    //             pincode: value,
-    //           }));
-    //         }}
-    //         placeholder="Enter 6-digit pincode"
-    //         className="
-    //           h-12
-    //           w-full
-    //           rounded-xl
-    //           border
-    //           border-border
-    //           bg-white
-    //           px-3
-    //           text-text-primary
-    //           outline-none
-    //           focus:border-primary
-    //           focus:ring-2
-    //           focus:ring-primary/10
-    //         "
-    //       />
-
-    //       {form.pincode && !/^\d{6}$/.test(form.pincode) && (
-    //         <p
-    //           className="
-    //               mt-1
-    //               text-xs
-    //               text-error
-    //             "
-    //         >
-    //           Enter a valid 6-digit pincode.
-    //         </p>
-    //       )}
-    //     </div>
-    //   </div>
-
-    //   <div
-    //     className="
-    //       mt-6
-    //       rounded-xl
-    //       border
-    //       border-border
-    //       bg-surface-muted
-    //       p-4
-    //     "
-    //   >
-    //     <div
-    //       className="
-    //         flex
-    //         items-start
-    //         gap-3
-    //       "
-    //     >
-    //       <LocateFixed
-    //         className="
-    //           mt-0.5
-    //           h-5 w-5
-    //           shrink-0
-    //           text-primary
-    //         "
-    //       />
-
-    //       <div
-    //         className="
-    //           flex-1
-    //         "
-    //       >
-    //         <p
-    //           className="
-    //             font-bold
-    //             text-text-primary
-    //           "
-    //         >
-    //           Improve nearby discovery
-    //         </p>
-
-    //         <p
-    //           className="
-    //             mt-1
-    //             text-sm
-    //             text-text-secondary
-    //           "
-    //         >
-    //           Add your current GPS location so nearby buyers can find you more
-    //           accurately.
-    //         </p>
-
-    //         {form.geoLocation ? (
-    //           <div
-    //             className="
-    //               mt-3
-    //               rounded-lg
-    //               bg-primary-light
-    //               px-3
-    //               py-2
-    //               text-sm
-    //               font-medium
-    //               text-primary
-    //             "
-    //           >
-    //             ✓ Current location captured
-    //           </div>
-    //         ) : (
-    //           <button
-    //             type="button"
-    //             onClick={handleUseCurrentLocation}
-    //             disabled={geoLoading}
-    //             className="
-    //               mt-3
-    //               inline-flex
-    //               min-h-11
-    //               items-center
-    //               justify-center
-    //               gap-2
-    //               rounded-xl
-    //               border
-    //               border-primary
-    //               bg-white
-    //               px-4
-    //               text-sm
-    //               font-bold
-    //               text-primary
-    //               transition
-    //               hover:bg-primary-light
-    //               disabled:cursor-not-allowed
-    //               disabled:opacity-60
-    //             "
-    //           >
-    //             <LocateFixed
-    //               className="
-    //                 h-4 w-4
-    //               "
-    //             />
-
-    //             {geoLoading ? "Getting location..." : "Use Current Location"}
-    //           </button>
-    //         )}
-
-    //         {geoError && (
-    //           <p
-    //             className="
-    //               mt-2
-    //               text-xs
-    //               text-error
-    //             "
-    //           >
-    //             {geoError}
-    //           </p>
-    //         )}
-    //       </div>
-    //     </div>
-    //   </div>
-
-    //   <div
-    //     className="
-    //       mt-6
-    //       flex
-    //       flex-col-reverse
-    //       gap-3
-    //       sm:flex-row
-    //       sm:justify-between
-    //     "
-    //   >
-    //     <button
-    //       type="button"
-    //       onClick={onBack}
-    //       className="
-    //         inline-flex
-    //         h-12
-    //         items-center
-    //         justify-center
-    //         gap-2
-    //         rounded-xl
-    //         border
-    //         border-border
-    //         bg-white
-    //         px-5
-    //         font-bold
-    //         text-text-primary
-    //         transition
-    //         hover:bg-surface-muted
-    //       "
-    //     >
-    //       <ArrowLeft
-    //         className="
-    //           h-4 w-4
-    //         "
-    //       />
-    //       Back
-    //     </button>
-
-    //     <button
-    //       type="button"
-    //       disabled={!isValid}
-    //       onClick={onSubmit}
-    //       className="
-    //         h-12
-    //         rounded-xl
-    //         bg-primary
-    //         px-6
-    //         font-bold
-    //         text-white
-    //         transition
-    //         hover:bg-primary-hover
-    //         disabled:cursor-not-allowed
-    //         disabled:opacity-50
-    //       "
-    //     >
-    //       Become a Seller
-    //     </button>
-    //   </div>
-    // </section>
   );
 }
